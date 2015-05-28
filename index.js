@@ -6,15 +6,16 @@ angular.module('hoge', [shinsekai]);
 angular.module('hoge').factory('data', ($interval) => {
   const width = 400,
         height = 400,
-        n = 10,
+        n = 200,
         points = [];
   for (let i = 0; i < n; ++i) {
     points.push({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      r: Math.random() * 9 + 1,
-      opacity: Math.random(),
-      duration: Math.random() + 0.5
+      x: width / 2,
+      y: height / 2,
+      r: 5,
+      opacity: 0.5,
+      duration: 1,
+      delay: 0
     });
   }
 
@@ -25,6 +26,7 @@ angular.module('hoge').factory('data', ($interval) => {
       point.r = Math.random() * 9 + 1;
       point.opacity = Math.random();
       point.duration = Math.random() + 0.5;
+      point.delay = Math.random() * 0.5;
     }
   }, 2000);
   return points;

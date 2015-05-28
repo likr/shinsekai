@@ -19,7 +19,10 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
     scope[value0Key] = scope[valueKey];
     scope.$watch(valueKey, () => {
       const duration = scope.ssDur || 1,
-            animate = createAnimate(attrName, scope[value0Key], scope[valueKey], svg.getCurrentTime(), duration);
+            delay = scope.ssDelay || 0.1,
+            animate = createAnimate(
+              attrName, scope[value0Key], scope[valueKey],
+              svg.getCurrentTime() + delay, duration);
       circle.appendChild(animate);
       animate.addEventListener('endEvent', () => {
         circle.setAttribute(attrName, scope[value0Key]);
@@ -36,7 +39,8 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
       ssCy: '=',
       ssR: '=',
       ssOpacity: '=',
-      ssDur: '='
+      ssDur: '=',
+      ssDelay: '='
     },
     link: (scope, element, attrs) => {
       const circle = element[0],
