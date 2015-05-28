@@ -40,9 +40,14 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
       ssR: '=',
       ssX: '=',
       ssY: '=',
+      ssX1: '=',
+      ssY1: '=',
+      ssX2: '=',
+      ssY2: '=',
       ssWidth: '=',
       ssHeight: '=',
       ssFill: '=',
+      ssStroke: '=',
       ssOpacity: '=',
       ssDur: '=',
       ssDelay: '='
@@ -52,6 +57,7 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
             svg = element.ownerSVGElement;
 
       addAttribute(svg, element, 'fill0', 'ssFill', scope, 'fill');
+      addAttribute(svg, element, 'stroke0', 'ssStroke', scope, 'stroke');
       addAttribute(svg, element, 'opacity0', 'ssOpacity', scope, 'opacity');
       if (element.tagName === 'circle') {
         addAttribute(svg, element, 'cx0', 'ssCx', scope, 'cx');
@@ -63,6 +69,12 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
         addAttribute(svg, element, 'y0', 'ssY', scope, 'y');
         addAttribute(svg, element, 'width0', 'ssWidth', scope, 'width');
         addAttribute(svg, element, 'height0', 'ssHeight', scope, 'height');
+      }
+      if (element.tagName === 'line') {
+        addAttribute(svg, element, 'x10', 'ssX1', scope, 'x1');
+        addAttribute(svg, element, 'y10', 'ssY1', scope, 'y1');
+        addAttribute(svg, element, 'x20', 'ssX2', scope, 'x2');
+        addAttribute(svg, element, 'y20', 'ssY2', scope, 'y2');
       }
     }
   };
