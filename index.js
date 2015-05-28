@@ -3,9 +3,8 @@ import angular from 'angular';
 angular.module('shinsekai', []);
 
 angular.module('shinsekai').directive('ssCircle', ($window) => {
-  const createAnimate = (id, attr, value0, value, now) => {
+  const createAnimate = (attr, value0, value, now) => {
     const animate = $window.document.createElementNS('http://www.w3.org/2000/svg', 'animate');
-    animate.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `#${id}`);
     animate.setAttribute('attributeName', attr);
     animate.setAttribute('dur', '1s');
     animate.setAttribute('fill', 'freeze');
@@ -16,20 +15,18 @@ angular.module('shinsekai').directive('ssCircle', ($window) => {
     return animate;
   };
 
-  const addAttribute = (svg, circle, domId, value0Key, valueKey, scope, attrName) => {
+  const addAttribute = (svg, circle, value0Key, valueKey, scope, attrName) => {
     scope[value0Key] = scope[valueKey];
     scope.$watch(valueKey, () => {
-      const animate = createAnimate(domId, attrName, scope[value0Key], scope[valueKey], svg.getCurrentTime());
-      svg.appendChild(animate);
-      animate.addEventListener('endEvent', function () {
+      const animate = createAnimate(attrName, scope[value0Key], scope[valueKey], svg.getCurrentTime());
+      circle.appendChild(animate);
+      animate.addEventListener('endEvent', () => {
         circle.setAttribute(attrName, scope[value0Key]);
-        svg.removeChild(animate);
+        circle.removeChild(animate);
       });
       scope[value0Key] = scope[valueKey];
     });
   };
-
-  let id = 0;
 
   return {
     restrict: 'E',
@@ -45,12 +42,9 @@ angular.module('shinsekai').directive('ssCircle', ($window) => {
       const circle = element[0],
             svg = circle.ownerSVGElement;
 
-      const domId = `ss-id-${id++}`;
-      circle.setAttribute('id', domId);
-
-      addAttribute(svg, circle, domId, 'x0', 'ssCx', scope, 'cx');
-      addAttribute(svg, circle, domId, 'y0', 'ssCy', scope, 'cy');
-      addAttribute(svg, circle, domId, 'r0', 'ssR', scope, 'r');
+      addAttribute(svg, circle, 'x0', 'ssCx', scope, 'cx');
+      addAttribute(svg, circle, 'y0', 'ssCy', scope, 'cy');
+      addAttribute(svg, circle, 'r0', 'ssR', scope, 'r');
     }
   };
 });
