@@ -3,22 +3,23 @@ import angular from 'angular';
 angular.module('shinsekai', []);
 
 angular.module('shinsekai').directive('ssvg', ($window) => {
-  const createAnimate = (attr, value0, value, now) => {
+  const createAnimate = (attr, value0, value, now, duration) => {
     const animate = $window.document.createElementNS('http://www.w3.org/2000/svg', 'animate');
     animate.setAttribute('attributeName', attr);
-    animate.setAttribute('dur', '1s');
+    animate.setAttribute('dur', `${duration}s`);
     animate.setAttribute('fill', 'freeze');
     animate.setAttribute('from', value0);
     animate.setAttribute('to', value);
     animate.setAttribute('begin', now);
-    animate.setAttribute('end', now + 1);
+    animate.setAttribute('end', now + duration);
     return animate;
   };
 
   const addAttribute = (svg, circle, value0Key, valueKey, scope, attrName) => {
     scope[value0Key] = scope[valueKey];
     scope.$watch(valueKey, () => {
-      const animate = createAnimate(attrName, scope[value0Key], scope[valueKey], svg.getCurrentTime());
+      const duration = scope.ssDur || 1,
+            animate = createAnimate(attrName, scope[value0Key], scope[valueKey], svg.getCurrentTime(), duration);
       circle.appendChild(animate);
       animate.addEventListener('endEvent', () => {
         circle.setAttribute(attrName, scope[value0Key]);
@@ -33,7 +34,8 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
     scope: {
       ssCx: '=',
       ssCy: '=',
-      ssR: '='
+      ssR: '=',
+      ssDur: '='
     },
     link: (scope, element, attrs) => {
       const circle = element[0],
@@ -57,7 +59,8 @@ angular.module('hoge').factory('data', ($interval) => {
     points.push({
       x: Math.random() * width,
       y: Math.random() * height,
-      r: Math.random() * 9 + 1
+      r: Math.random() * 9 + 1,
+      duration: Math.random() + 0.5
     });
   }
 
@@ -66,6 +69,7 @@ angular.module('hoge').factory('data', ($interval) => {
       point.x = Math.random() * width;
       point.y = Math.random() * height;
       point.r = Math.random() * 9 + 1;
+      point.duration = Math.random() + 0.5;
     }
   }, 2000);
   return points;
