@@ -13,6 +13,7 @@ angular.module('hoge').factory('data', ($interval) => {
       x: Math.random() * width,
       y: Math.random() * height,
       r: Math.random() * 9 + 1,
+      opacity: Math.random(),
       duration: Math.random() + 0.5
     });
   }
@@ -22,6 +23,7 @@ angular.module('hoge').factory('data', ($interval) => {
       point.x = Math.random() * width;
       point.y = Math.random() * height;
       point.r = Math.random() * 9 + 1;
+      point.opacity = Math.random();
       point.duration = Math.random() + 0.5;
     }
   }, 2000);

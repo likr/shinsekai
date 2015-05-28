@@ -35,6 +35,7 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
       ssCx: '=',
       ssCy: '=',
       ssR: '=',
+      ssOpacity: '=',
       ssDur: '='
     },
     link: (scope, element, attrs) => {
@@ -44,6 +45,7 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
       addAttribute(svg, circle, 'x0', 'ssCx', scope, 'cx');
       addAttribute(svg, circle, 'y0', 'ssCy', scope, 'cy');
       addAttribute(svg, circle, 'r0', 'ssR', scope, 'r');
+      addAttribute(svg, circle, 'opacity0', 'ssOpacity', scope, 'opacity');
     }
   };
 });
