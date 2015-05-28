@@ -15,7 +15,7 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
     return animate;
   };
 
-  const addAttribute = (svg, circle, value0Key, valueKey, scope, attrName) => {
+  const addAttribute = (svg, element, value0Key, valueKey, scope, attrName) => {
     scope[value0Key] = scope[valueKey];
     scope.$watch(valueKey, () => {
       const duration = scope.ssDur || 1,
@@ -23,10 +23,10 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
             animate = createAnimate(
               attrName, scope[value0Key], scope[valueKey],
               svg.getCurrentTime() + delay, duration);
-      circle.appendChild(animate);
+      element.appendChild(animate);
       animate.addEventListener('endEvent', () => {
-        circle.setAttribute(attrName, scope[value0Key]);
-        circle.removeChild(animate);
+        element.setAttribute(attrName, scope[value0Key]);
+        element.removeChild(animate);
       });
       scope[value0Key] = scope[valueKey];
     });
@@ -38,18 +38,32 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
       ssCx: '=',
       ssCy: '=',
       ssR: '=',
+      ssX: '=',
+      ssY: '=',
+      ssWidth: '=',
+      ssHeight: '=',
+      ssFill: '=',
       ssOpacity: '=',
       ssDur: '=',
       ssDelay: '='
     },
-    link: (scope, element, attrs) => {
-      const circle = element[0],
-            svg = circle.ownerSVGElement;
+    link: (scope, elementWrapper, attrs) => {
+      const element = elementWrapper[0],
+            svg = element.ownerSVGElement;
 
-      addAttribute(svg, circle, 'x0', 'ssCx', scope, 'cx');
-      addAttribute(svg, circle, 'y0', 'ssCy', scope, 'cy');
-      addAttribute(svg, circle, 'r0', 'ssR', scope, 'r');
-      addAttribute(svg, circle, 'opacity0', 'ssOpacity', scope, 'opacity');
+      addAttribute(svg, element, 'fill0', 'ssFill', scope, 'fill');
+      addAttribute(svg, element, 'opacity0', 'ssOpacity', scope, 'opacity');
+      if (element.tagName === 'circle') {
+        addAttribute(svg, element, 'cx0', 'ssCx', scope, 'cx');
+        addAttribute(svg, element, 'cy0', 'ssCy', scope, 'cy');
+        addAttribute(svg, element, 'r0', 'ssR', scope, 'r');
+      }
+      if (element.tagName === 'rect') {
+        addAttribute(svg, element, 'x0', 'ssX', scope, 'x');
+        addAttribute(svg, element, 'y0', 'ssY', scope, 'y');
+        addAttribute(svg, element, 'width0', 'ssWidth', scope, 'width');
+        addAttribute(svg, element, 'height0', 'ssHeight', scope, 'height');
+      }
     }
   };
 });
