@@ -2,7 +2,7 @@ import angular from 'angular';
 
 angular.module('shinsekai', []);
 
-angular.module('shinsekai').directive('ssCircle', ($window) => {
+angular.module('shinsekai').directive('ssvg', ($window) => {
   const createAnimate = (attr, value0, value, now) => {
     const animate = $window.document.createElementNS('http://www.w3.org/2000/svg', 'animate');
     animate.setAttribute('attributeName', attr);
@@ -29,10 +29,7 @@ angular.module('shinsekai').directive('ssCircle', ($window) => {
   };
 
   return {
-    restrict: 'E',
-    replace: true,
-    template: '<circle/>',
-    templateNamespace: 'svg',
+    restrict: 'A',
     scope: {
       ssCx: '=',
       ssCy: '=',
