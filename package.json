@@ -1,15 +1,14 @@
 {
-  "name": "cssanim",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "shinsekai",
+  "version": "0.0.1",
+  "description": "Cmponent based visualization framework for Angular",
   "scripts": {
-    "build": "browserify index.js -o app.js -t [ babelify --optional runtime ]",
+    "build": "browserify src/index.js -o app/app.js -t [ babelify --optional runtime ]",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "watchify index.js -o app.js -t [ babelify --optional runtime ] -v"
+    "watch": "watchify src/index.js -o app/app.js -t [ babelify --optional runtime ] -v"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Yosuke ONOUE <onoue@likr-lab.com>",
+  "license": "MIT",
   "dependencies": {
     "angular": "^1.4.0",
     "angular-animate": "^1.4.0"
