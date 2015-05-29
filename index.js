@@ -66,6 +66,34 @@ angular.module('hoge').factory('rects', ($interval, width, height) => {
   return rects;
 });
 
+angular.module('hoge').factory('texts', ($interval, width, height) => {
+  const n = 10,
+        texts = [];
+  for (let i = 0; i < n; ++i) {
+    texts.push({
+      text: 'imai',
+      x: width / 2,
+      y: height / 2,
+      color: '#000',
+      opacity: 0.5,
+      duration: 1,
+      delay: 0
+    });
+  }
+
+  $interval(() => {
+    for (const text of texts) {
+      text.x = Math.random() * width;
+      text.y = Math.random() * height;
+      text.color = `hsl(${Math.random() * 360},100%,50%)`;
+      text.opacity = Math.random();
+      text.duration = Math.random() + 0.5;
+      text.delay = Math.random() * 0.5;
+    }
+  }, 2000);
+  return texts;
+});
+
 angular.module('hoge').factory('lines', ($interval, width, height) => {
   const n = 10,
         lines = [];
@@ -105,12 +133,13 @@ angular.module('hoge').directive('main', () => {
     },
     controllerAs: 'main',
     controller: class {
-      constructor(width, height, circles, rects, lines) {
+      constructor(width, height, circles, rects, lines, texts) {
         this.width = width;
         this.height = height;
         this.circles = circles;
         this.rects = rects;
         this.lines = lines;
+        this.texts = texts;
       }
     }
   };

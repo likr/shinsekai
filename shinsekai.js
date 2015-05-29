@@ -64,9 +64,11 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
         addAttribute(svg, element, 'cy0', 'ssCy', scope, 'cy');
         addAttribute(svg, element, 'r0', 'ssR', scope, 'r');
       }
-      if (element.tagName === 'rect') {
+      if (element.tagName === 'rect' || element.tagName === 'text') {
         addAttribute(svg, element, 'x0', 'ssX', scope, 'x');
         addAttribute(svg, element, 'y0', 'ssY', scope, 'y');
+      }
+      if (element.tagName === 'rect') {
         addAttribute(svg, element, 'width0', 'ssWidth', scope, 'width');
         addAttribute(svg, element, 'height0', 'ssHeight', scope, 'height');
       }

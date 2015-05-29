@@ -8,4 +8,9 @@
   <line ssvg ss-x1="line.x1" ss-y1="line.y1" ss-x2="line.x2" ss-y2="line.y2"
     ss-stroke="line.color" ss-opacity="line.opacity"
     ss-dur="line.duration" ss-delay="line.delay" ng-repeat="line in main.lines"/>
+  <text ssvg ss-x="text.x" ss-y="text.y"
+      ss-fill="text.color" ss-opacity="text.opacity"
+      ss-dur="text.duration" ss-delay="text.delay" ng-repeat="text in main.texts">
+    {{text.text}}
+  </text>
 </svg>
