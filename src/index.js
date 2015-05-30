@@ -166,7 +166,7 @@ angular.module('hoge').factory('lines', ($interval, width, height, delay, count)
 });
 
 angular.module('hoge').factory('paths', ($interval, width, height, delay, count) => {
-  const n = 10,
+  const n = 5,
         paths = [];
   for (let i = 0; i < n; ++i) {
     paths.push({
@@ -200,6 +200,42 @@ angular.module('hoge').factory('paths', ($interval, width, height, delay, count)
   return paths;
 });
 
+angular.module('hoge').factory('polygons', ($interval, width, height, delay, count) => {
+  const n = 10,
+        polygons = [];
+  for (let i = 0; i < n; ++i) {
+    polygons.push({
+      points: [],
+      color: '#000',
+      opacity: 0.5,
+      duration: 1,
+      delay: 0
+    });
+    for (let j = 0; j < i + 3; ++j) {
+      polygons[i].points.push([width / 2, height / 2]);
+    }
+  }
+
+  $interval(() => {
+    for (const polygon of polygons) {
+      for (const point of polygon.points) {
+        point[0] = Math.random() * width;
+        point[1] = Math.random() * height;
+      }
+      polygon.y1 = Math.random() * height;
+      polygon.x2 = Math.random() * width;
+      polygon.y2 = Math.random() * height;
+      polygon.x3 = Math.random() * width;
+      polygon.y3 = Math.random() * height;
+      polygon.color = `hsl(${Math.random() * 360},100%,50%)`;
+      polygon.opacity = Math.random();
+      polygon.duration = Math.random() + 0.5;
+      polygon.delay = Math.random() * 0.5;
+    }
+  }, delay, count);
+  return polygons;
+});
+
 angular.module('hoge').directive('main', () => {
   return {
     restrict: 'E',
@@ -208,7 +244,7 @@ angular.module('hoge').directive('main', () => {
     },
     controllerAs: 'main',
     controller: class {
-      constructor(width, height, circles, ellipses, rects, lines, texts, paths) {
+      constructor(width, height, circles, ellipses, rects, lines, texts, paths, polygons) {
         this.width = width;
         this.height = height;
         this.circles = circles;
@@ -217,10 +253,15 @@ angular.module('hoge').directive('main', () => {
         this.lines = lines;
         this.texts = texts;
         this.paths = paths;
+        this.polygons = polygons;
       }
 
       pathFrom(x, y) {
         return new Path(x, y);
+      }
+
+      points(points) {
+        return points.map(p => `${p[0]},${p[1]}`).join(' ');
       }
     }
   };

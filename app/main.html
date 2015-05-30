@@ -20,4 +20,8 @@
     ss-d="main.pathFrom(path.x1, path.y1).lineTo(path.x2, path.y2).lineTo(path.x3, path.y3).close().toString()"
     fill="none" ss-stroke="path.color" ss-opacity="path.opacity"
     ss-dur="path.duration" ss-delay="path.delay" ng-repeat="path in main.paths"/>
+  <polygon ssvg
+    ss-points="main.points(polygon.points)"
+    fill="none" ss-stroke="polygon.color" ss-opacity="polygon.color"
+    ss-dur="polygon.duration" ss-delay="polygon.delay" ng-repeat="polygon in main.polygons"/>
 </svg>

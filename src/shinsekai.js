@@ -83,6 +83,12 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
       'fill',
       'stroke',
       'opacity'
+    ],
+    polygon: [
+      'points',
+      'fill',
+      'stroke',
+      'opacity'
     ]
   };
 
@@ -103,6 +109,7 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
       width: '=ssWidth',
       height: '=ssHeight',
       d: '=ssD',
+      points: '=ssPoints',
       fill: '=ssFill',
       stroke: '=ssStroke',
       opacity: '=ssOpacity',
@@ -113,7 +120,7 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
       const element = elementWrapper[0],
             svg = element.ownerSVGElement;
 
-      for (const attrName of attributes[element.tagName]) {
+      for (const attrName of attributes[element.tagName] || []) {
         addAttribute(svg, element, `${attrName}0`, attrName, scope);
       }
     }
