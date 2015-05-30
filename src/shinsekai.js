@@ -2,82 +2,110 @@ import angular from 'angular';
 
 angular.module('shinsekai', []);
 
-angular.module('shinsekai').directive('ssvg', ($window) => {
-  const createAnimate = (attr, value0, value, now, duration) => {
-    const animate = $window.document.createElementNS('http://www.w3.org/2000/svg', 'animate');
-    animate.setAttribute('attributeName', attr);
-    animate.setAttribute('dur', `${duration}s`);
-    animate.setAttribute('fill', 'freeze');
-    animate.setAttribute('from', value0);
-    animate.setAttribute('to', value);
-    animate.setAttribute('begin', now);
-    animate.setAttribute('end', now + duration);
-    return animate;
-  };
-
-  const addAttribute = (svg, element, value0Key, valueKey, scope, attrName) => {
-    scope[value0Key] = scope[valueKey];
-    scope.$watch(valueKey, () => {
-      const duration = scope.ssDur || 1,
-            delay = scope.ssDelay || 0.1,
-            animate = createAnimate(
-              attrName, scope[value0Key], scope[valueKey],
-              svg.getCurrentTime() + delay, duration);
-      element.appendChild(animate);
-      animate.addEventListener('endEvent', () => {
-        element.setAttribute(attrName, scope[value0Key]);
-        element.removeChild(animate);
+angular.module('shinsekai').directive('ssAnimate', () => {
+  return {
+    restrict: 'A',
+    scope: {
+      end: '=ssEnd'
+    },
+    link: (scope, elementWrapper, attrs) => {
+      const element = elementWrapper[0];
+      element.addEventListener('endEvent', () => {
+        scope.end(attrs.attributename);
       });
-      scope[value0Key] = scope[valueKey];
-    });
+    }
+  };
+});
+
+angular.module('shinsekai').directive('ssvg', ($window) => {
+  const attributes = {
+    circle: [
+      'cx',
+      'cy',
+      'r',
+      'fill',
+      'opacity'
+    ],
+    rect: [
+      'x',
+      'y',
+      'width',
+      'height:',
+      'fill',
+      'opacity'
+    ],
+    line: [
+      'x1',
+      'y1',
+      'x2',
+      'y2',
+      'fill',
+      'stroke',
+      'opacity'
+    ],
+    text: [
+      'x',
+      'y',
+      'fill',
+      'stroke',
+      'opacity'
+    ]
   };
 
   return {
     restrict: 'A',
     scope: {
-      ssCx: '=',
-      ssCy: '=',
-      ssR: '=',
-      ssX: '=',
-      ssY: '=',
-      ssX1: '=',
-      ssY1: '=',
-      ssX2: '=',
-      ssY2: '=',
-      ssWidth: '=',
-      ssHeight: '=',
-      ssFill: '=',
-      ssStroke: '=',
-      ssOpacity: '=',
-      ssDur: '=',
-      ssDelay: '='
+      cx: '=ssCx',
+      cy: '=ssCy',
+      r: '=ssR',
+      x: '=ssX',
+      y: '=ssY',
+      x1: '=ssX1',
+      y1: '=ssY1',
+      x2: '=ssX2',
+      y2: '=ssY2',
+      width: '=ssWidth',
+      height: '=ssHeight',
+      fill: '=ssFill',
+      stroke: '=ssStroke',
+      opacity: '=ssOpacity',
+      dur: '=ssDur',
+      delay: '=ssDelay'
     },
+    template: `
+      <animate ng-repeat="attr in attrs"
+        ng-if="attr.from() !== attr.to()"
+        ss-animate
+        ss-end="onend"
+        attributeName="{{::attr.name}}"
+        ng-attr-dur="{{dur}}"
+        ng-attr-from="{{attr.from()}}"
+        ng-attr-to="{{attr.to()}}"
+        ng-attr-begin="{{now() + delay}}"
+        ng-attr-end="{{now() + delay + dur}}"
+        fill="freeze"/>
+    `,
+    templateNamespace: 'svg',
     link: (scope, elementWrapper, attrs) => {
       const element = elementWrapper[0],
             svg = element.ownerSVGElement;
 
-      addAttribute(svg, element, 'fill0', 'ssFill', scope, 'fill');
-      addAttribute(svg, element, 'stroke0', 'ssStroke', scope, 'stroke');
-      addAttribute(svg, element, 'opacity0', 'ssOpacity', scope, 'opacity');
-      if (element.tagName === 'circle') {
-        addAttribute(svg, element, 'cx0', 'ssCx', scope, 'cx');
-        addAttribute(svg, element, 'cy0', 'ssCy', scope, 'cy');
-        addAttribute(svg, element, 'r0', 'ssR', scope, 'r');
-      }
-      if (element.tagName === 'rect' || element.tagName === 'text') {
-        addAttribute(svg, element, 'x0', 'ssX', scope, 'x');
-        addAttribute(svg, element, 'y0', 'ssY', scope, 'y');
-      }
-      if (element.tagName === 'rect') {
-        addAttribute(svg, element, 'width0', 'ssWidth', scope, 'width');
-        addAttribute(svg, element, 'height0', 'ssHeight', scope, 'height');
-      }
-      if (element.tagName === 'line') {
-        addAttribute(svg, element, 'x10', 'ssX1', scope, 'x1');
-        addAttribute(svg, element, 'y10', 'ssY1', scope, 'y1');
-        addAttribute(svg, element, 'x20', 'ssX2', scope, 'x2');
-        addAttribute(svg, element, 'y20', 'ssY2', scope, 'y2');
-      }
+      scope.now = () => svg.getCurrentTime();
+      scope.attrs = attributes[element.tagName].map((attrName) => {
+        attrs.$set(attrName, scope[attrName]);
+        scope[`${attrName}0`] = scope[attrName];
+        return {
+          name: attrName,
+          from: () => scope[`${attrName}0`],
+          to: () => scope[attrName]
+        };
+      });
+      scope.onend = (attrName) => {
+        scope.$apply(() => {
+          attrs.$set(attrName, scope[attrName]);
+          scope[`${attrName}0`] = scope[attrName];
+        });
+      };
     }
   };
 });
