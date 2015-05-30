@@ -74,6 +74,15 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
       'fill',
       'stroke',
       'opacity'
+    ],
+    ellipse: [
+      'cx',
+      'cy',
+      'rx',
+      'ry',
+      'fill',
+      'stroke',
+      'opacity'
     ]
   };
 
@@ -83,6 +92,8 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
       cx: '=ssCx',
       cy: '=ssCy',
       r: '=ssR',
+      rx: '=ssRx',
+      ry: '=ssRy',
       x: '=ssX',
       y: '=ssY',
       x1: '=ssX1',
