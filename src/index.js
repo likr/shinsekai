@@ -1,5 +1,6 @@
 import angular from 'angular';
 import shinsekai from './shinsekai';
+import Path from './path';
 
 angular.module('hoge', [shinsekai]);
 
@@ -131,6 +132,41 @@ angular.module('hoge').factory('lines', ($interval, width, height, delay, count)
   return lines;
 });
 
+angular.module('hoge').factory('paths', ($interval, width, height, delay, count) => {
+  const n = 10,
+        paths = [];
+  for (let i = 0; i < n; ++i) {
+    paths.push({
+      x1: width / 2,
+      y1: height / 2,
+      x2: width / 2,
+      y2: height / 2,
+      x3: width / 2,
+      y3: height / 2,
+      color: '#000',
+      opacity: 0.5,
+      duration: 1,
+      delay: 0
+    });
+  }
+
+  $interval(() => {
+    for (const path of paths) {
+      path.x1 = Math.random() * width;
+      path.y1 = Math.random() * height;
+      path.x2 = Math.random() * width;
+      path.y2 = Math.random() * height;
+      path.x3 = Math.random() * width;
+      path.y3 = Math.random() * height;
+      path.color = `hsl(${Math.random() * 360},100%,50%)`;
+      path.opacity = Math.random();
+      path.duration = Math.random() + 0.5;
+      path.delay = Math.random() * 0.5;
+    }
+  }, delay, count);
+  return paths;
+});
+
 angular.module('hoge').directive('main', () => {
   return {
     restrict: 'E',
@@ -139,13 +175,18 @@ angular.module('hoge').directive('main', () => {
     },
     controllerAs: 'main',
     controller: class {
-      constructor(width, height, circles, rects, lines, texts) {
+      constructor(width, height, circles, rects, lines, texts, paths) {
         this.width = width;
         this.height = height;
         this.circles = circles;
         this.rects = rects;
         this.lines = lines;
         this.texts = texts;
+        this.paths = paths;
+      }
+
+      pathFrom(x, y) {
+        return new Path(x, y);
       }
     }
   };

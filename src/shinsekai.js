@@ -16,6 +16,9 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
   };
 
   const addAttribute = (svg, element, value0Key, valueKey, scope) => {
+    if (scope[valueKey] == null) {
+      return;
+    }
     scope[value0Key] = scope[valueKey];
     scope.$watch(valueKey, () => {
       const duration = scope.ssDur || 1,
@@ -65,6 +68,12 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
       'fill',
       'stroke',
       'opacity'
+    ],
+    path: [
+      'd',
+      'fill',
+      'stroke',
+      'opacity'
     ]
   };
 
@@ -82,6 +91,7 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
       y2: '=ssY2',
       width: '=ssWidth',
       height: '=ssHeight',
+      d: '=ssD',
       fill: '=ssFill',
       stroke: '=ssStroke',
       opacity: '=ssOpacity',

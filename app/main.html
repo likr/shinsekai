@@ -13,4 +13,8 @@
       ss-dur="text.duration" ss-delay="text.delay" ng-repeat="text in main.texts">
     {{text.text}}
   </text>
+  <path ssvg
+    ss-d="main.pathFrom(path.x1, path.y1).lineTo(path.x2, path.y2).lineTo(path.x3, path.y3).close().toString()"
+    fill="none" ss-stroke="path.color" ss-opacity="path.opacity"
+    ss-dur="path.duration" ss-delay="path.delay" ng-repeat="path in main.paths"/>
 </svg>
