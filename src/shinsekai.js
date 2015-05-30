@@ -38,6 +38,7 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
       'cy',
       'r',
       'fill',
+      'stroke',
       'opacity'
     ],
     rect: [
@@ -46,6 +47,7 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
       'width',
       'height',
       'fill',
+      'stroke',
       'opacity'
     ],
     line: [
