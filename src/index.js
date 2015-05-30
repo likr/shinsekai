@@ -5,8 +5,10 @@ angular.module('hoge', [shinsekai]);
 
 angular.module('hoge').constant('width', 500);
 angular.module('hoge').constant('height', 500);
+angular.module('hoge').constant('delay', 2000);
+angular.module('hoge').constant('count', Infinity);
 
-angular.module('hoge').factory('circles', ($interval, width, height) => {
+angular.module('hoge').factory('circles', ($interval, width, height, delay, count) => {
   const n = 10,
         circles = [];
   for (let i = 0; i < n; ++i) {
@@ -31,11 +33,11 @@ angular.module('hoge').factory('circles', ($interval, width, height) => {
       circle.duration = Math.random() + 0.5;
       circle.delay = Math.random() * 0.5;
     }
-  }, 2000);
+  }, delay, count);
   return circles;
 });
 
-angular.module('hoge').factory('rects', ($interval, width, height) => {
+angular.module('hoge').factory('rects', ($interval, width, height, delay, count) => {
   const n = 10,
         rects = [];
   for (let i = 0; i < n; ++i) {
@@ -62,11 +64,11 @@ angular.module('hoge').factory('rects', ($interval, width, height) => {
       rect.duration = Math.random() + 0.5;
       rect.delay = Math.random() * 0.5;
     }
-  }, 2000);
+  }, delay, count);
   return rects;
 });
 
-angular.module('hoge').factory('texts', ($interval, width, height) => {
+angular.module('hoge').factory('texts', ($interval, width, height, delay, count) => {
   const n = 10,
         texts = [];
   for (let i = 0; i < n; ++i) {
@@ -90,11 +92,11 @@ angular.module('hoge').factory('texts', ($interval, width, height) => {
       text.duration = Math.random() + 0.5;
       text.delay = Math.random() * 0.5;
     }
-  }, 2000);
+  }, delay, count);
   return texts;
 });
 
-angular.module('hoge').factory('lines', ($interval, width, height) => {
+angular.module('hoge').factory('lines', ($interval, width, height, delay, count) => {
   const n = 10,
         lines = [];
   for (let i = 0; i < n; ++i) {
@@ -121,7 +123,7 @@ angular.module('hoge').factory('lines', ($interval, width, height) => {
       line.duration = Math.random() + 0.5;
       line.delay = Math.random() * 0.5;
     }
-  }, 2000);
+  }, delay, count);
   return lines;
 });
 
