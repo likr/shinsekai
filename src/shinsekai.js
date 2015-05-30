@@ -15,68 +15,83 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
     return animate;
   };
 
-  const addAttribute = (svg, element, value0Key, valueKey, scope, attrName) => {
+  const addAttribute = (svg, element, value0Key, valueKey, scope) => {
     scope[value0Key] = scope[valueKey];
     scope.$watch(valueKey, () => {
       const duration = scope.ssDur || 1,
             delay = scope.ssDelay || 0.1,
             animate = createAnimate(
-              attrName, scope[value0Key], scope[valueKey],
+              valueKey, scope[value0Key], scope[valueKey],
               svg.getCurrentTime() + delay, duration);
       element.appendChild(animate);
       animate.addEventListener('endEvent', () => {
-        element.setAttribute(attrName, scope[value0Key]);
+        element.setAttribute(valueKey, scope[value0Key]);
         element.removeChild(animate);
       });
       scope[value0Key] = scope[valueKey];
     });
   };
 
+  const attributes = {
+    circle: [
+      'cx',
+      'cy',
+      'r',
+      'fill',
+      'opacity'
+    ],
+    rect: [
+      'x',
+      'y',
+      'width',
+      'height',
+      'fill',
+      'opacity'
+    ],
+    line: [
+      'x1',
+      'y1',
+      'x2',
+      'y2',
+      'fill',
+      'stroke',
+      'opacity'
+    ],
+    text: [
+      'x',
+      'y',
+      'fill',
+      'stroke',
+      'opacity'
+    ]
+  };
+
   return {
     restrict: 'A',
     scope: {
-      ssCx: '=',
-      ssCy: '=',
-      ssR: '=',
-      ssX: '=',
-      ssY: '=',
-      ssX1: '=',
-      ssY1: '=',
-      ssX2: '=',
-      ssY2: '=',
-      ssWidth: '=',
-      ssHeight: '=',
-      ssFill: '=',
-      ssStroke: '=',
-      ssOpacity: '=',
-      ssDur: '=',
-      ssDelay: '='
+      cx: '=ssCx',
+      cy: '=ssCy',
+      r: '=ssR',
+      x: '=ssX',
+      y: '=ssY',
+      x1: '=ssX1',
+      y1: '=ssY1',
+      x2: '=ssX2',
+      y2: '=ssY2',
+      width: '=ssWidth',
+      height: '=ssHeight',
+      fill: '=ssFill',
+      stroke: '=ssStroke',
+      opacity: '=ssOpacity',
+      dur: '=ssDur',
+      delay: '=ssDelay'
     },
     link: (scope, elementWrapper, attrs) => {
       const element = elementWrapper[0],
             svg = element.ownerSVGElement;
 
-      addAttribute(svg, element, 'fill0', 'ssFill', scope, 'fill');
-      addAttribute(svg, element, 'stroke0', 'ssStroke', scope, 'stroke');
-      addAttribute(svg, element, 'opacity0', 'ssOpacity', scope, 'opacity');
-      if (element.tagName === 'circle') {
-        addAttribute(svg, element, 'cx0', 'ssCx', scope, 'cx');
-        addAttribute(svg, element, 'cy0', 'ssCy', scope, 'cy');
-        addAttribute(svg, element, 'r0', 'ssR', scope, 'r');
-      }
-      if (element.tagName === 'rect' || element.tagName === 'text') {
-        addAttribute(svg, element, 'x0', 'ssX', scope, 'x');
-        addAttribute(svg, element, 'y0', 'ssY', scope, 'y');
-      }
-      if (element.tagName === 'rect') {
-        addAttribute(svg, element, 'width0', 'ssWidth', scope, 'width');
-        addAttribute(svg, element, 'height0', 'ssHeight', scope, 'height');
-      }
-      if (element.tagName === 'line') {
-        addAttribute(svg, element, 'x10', 'ssX1', scope, 'x1');
-        addAttribute(svg, element, 'y10', 'ssY1', scope, 'y1');
-        addAttribute(svg, element, 'x20', 'ssX2', scope, 'x2');
-        addAttribute(svg, element, 'y20', 'ssY2', scope, 'y2');
+      for (const attrName of attributes[element.tagName]) {
+        addAttribute(svg, element, `${attrName}0`, attrName, scope);
       }
     }
   };
