@@ -1,7 +1,7 @@
 {
   "name": "shinsekai",
   "version": "0.0.1",
-  "description": "Cmponent based visualization framework for Angular",
+  "description": "Component based visualization framework for Angular",
   "scripts": {
     "build": "browserify src/index.js -o app/app.js -t [ babelify --optional runtime ]",
     "test": "echo \"Error: no test specified\" && exit 1",
