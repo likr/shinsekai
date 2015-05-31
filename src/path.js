@@ -1,3 +1,5 @@
+import angular from 'angular';
+
 class Path {
   constructor(x, y) {
     this.d = `M${x},${y}`;
@@ -18,4 +20,8 @@ class Path {
   }
 }
 
-export default Path;
+angular.module('shinsekai.path', []).factory('Path', () => {
+  return Path;
+});
+
+export default 'shinsekai.path';

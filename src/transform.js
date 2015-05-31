@@ -1,3 +1,5 @@
+import angular from 'angular';
+
 class Transform {
   constructor() {
     this.transforms = [];
@@ -58,4 +60,8 @@ class Transform {
   }
 }
 
-export default Transform;
+angular.module('shinsekai.transform', []).factory('Transform', () => {
+  return Transform;
+});
+
+export default 'shinsekai.transform';

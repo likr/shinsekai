@@ -2,16 +2,15 @@
   "name": "shinsekai",
   "version": "0.0.1",
   "description": "Component based visualization framework for Angular",
+  "main": "lib/index.js",
   "scripts": {
-    "build": "browserify src/index.js -o app/app.js -t [ babelify --optional runtime ]",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "watchify src/index.js -o app/app.js -t [ babelify --optional runtime ] -v"
+    "build": "browserify app/index.js -o app/app.js -t [ babelify --optional runtime ]",
+    "watch": "watchify app/index.js -o app/app.js -t [ babelify --optional runtime ] -v"
   },
   "author": "Yosuke ONOUE <onoue@likr-lab.com>",
   "license": "MIT",
   "dependencies": {
-    "angular": "^1.4.0",
-    "angular-animate": "^1.4.0"
+    "angular": "^1.4.0"
   },
   "devDependencies": {
     "babelify": "^6.1.2",
