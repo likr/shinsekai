@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "browserify app/index.js -o app/app.js -t [ babelify --optional runtime ]",
+    "release": "rm -rf lib && babel src --out-dir lib && npm publish",
     "watch": "watchify app/index.js -o app/app.js -t [ babelify --optional runtime ] -v"
   },
   "author": "Yosuke ONOUE <onoue@likr-lab.com>",
