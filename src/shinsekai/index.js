@@ -20,19 +20,22 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
       return;
     }
     scope[value0Key] = scope[valueKey];
-    scope.$watch(valueKey, () => {
-      const duration = scope.ssDur || 1,
-            delay = scope.ssDelay || 0.1,
-            animate = createAnimate(
-              valueKey, scope[value0Key], scope[valueKey],
-              svg.getCurrentTime() + delay, duration);
-      element.appendChild(animate);
-      animate.addEventListener('endEvent', () => {
-        element.setAttribute(valueKey, scope[value0Key]);
-        element.removeChild(animate);
+    element.setAttribute(valueKey, scope[value0Key]);
+    if (scope.dur > 0 || scope.delay > 0) {
+      scope.$watch(valueKey, () => {
+        const duration = scope.ssDur || 1,
+              delay = scope.ssDelay || 0.1,
+              animate = createAnimate(
+                valueKey, scope[value0Key], scope[valueKey],
+                svg.getCurrentTime() + delay, duration);
+        element.appendChild(animate);
+        animate.addEventListener('endEvent', () => {
+          element.setAttribute(valueKey, scope[value0Key]);
+          element.removeChild(animate);
+        });
+        scope[value0Key] = scope[valueKey];
       });
-      scope[value0Key] = scope[valueKey];
-    });
+    }
   };
 
   const attributes = {
@@ -128,6 +131,42 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
 
       for (const attrName of attributes[element.tagName] || []) {
         addAttribute(svg, element, `${attrName}0`, attrName, scope);
+      }
+    }
+  };
+});
+
+angular.module('shinsekai').directive('ssAxis', () => {
+  return {
+    restrict: 'A',
+    template: `
+      <line ng-if="axis.orient === 'left'" ssvg x1="0" y1="0" x2="0" ss-y2="axis.length" stroke="#000"/>
+      <g ng-if="axis.orient === 'left'" ng-repeat="value in axis.values">
+        <line ssvg x1="-10" ss-y1="axis.length - value" x2="0" ss-y2="axis.length - value" stroke="#000"/>
+        <text ssvg x="-10" ss-y="axis.length - value" text-anchor="end">{{value}}</text>
+      </g>
+      <line ng-if="axis.orient === 'bottom'" ssvg x1="0" y1="0" ss-x2="axis.length" y2="0" stroke="#000"/>
+      <g ng-if="axis.orient === 'bottom'" ng-repeat="value in axis.values">
+        <line ssvg ss-x1="value" y1="0" ss-x2="value" y2="10" stroke="#000"/>
+        <text ssvg ss-x="value" y="30" text-anchor="middle">{{value}}</text>
+      </g>
+    `,
+    scope: {
+    },
+    bindToController: {
+      orient: '=ssOrient',
+      ticks: '=ssTicks',
+      length: '=ssLength',
+      xStart: '=ssXStart',
+      xStop: '=ssXStop'
+    },
+    controllerAs: 'axis',
+    controller: class AxisController {
+      constructor() {
+        this.values = [];
+        for (let i = 0; i <= this.ticks; ++i) {
+          this.values.push(i * (this.xStop - this.xStart) / this.ticks + this.xStart);
+        }
       }
     }
   };
