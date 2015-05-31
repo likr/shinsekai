@@ -4,32 +4,41 @@ angular.module('shinsekai.ss-axis', []).directive('ssAxis', () => {
   return {
     restrict: 'A',
     template: `
-      <line ng-if="axis.orient === 'left'" ssvg x1="0" y1="0" x2="0" ss-y2="axis.length" stroke="#000"/>
-      <g ng-if="axis.orient === 'left'" ng-repeat="value in axis.values">
-        <line ssvg x1="-10" ss-y1="axis.length - value" x2="0" ss-y2="axis.length - value" stroke="#000"/>
-        <text ssvg x="-10" ss-y="axis.length - value" text-anchor="end">{{value}}</text>
-      </g>
-      <line ng-if="axis.orient === 'bottom'" ssvg x1="0" y1="0" ss-x2="axis.length" y2="0" stroke="#000"/>
-      <g ng-if="axis.orient === 'bottom'" ng-repeat="value in axis.values">
-        <line ssvg ss-x1="value" y1="0" ss-x2="value" y2="10" stroke="#000"/>
-        <text ssvg ss-x="value" y="30" text-anchor="middle">{{value}}</text>
+      <line stroke="#000" ssvg
+          ss-x1="axis.orient === 'left' ? 0 : axis.scale.yMin"
+          ss-y1="axis.orient === 'left' ? axis.scale.yMin : 0"
+          ss-x2="axis.orient === 'left' ? 0 : axis.scale.yMax"
+          ss-y2="axis.orient === 'left' ? axis.scale.yMax : 0"/>
+      <g ng-repeat="value in axis.values">
+        <line stroke="#000" ssvg
+            ss-x1="axis.orient === 'left' ? -10 : value.y"
+            ss-y1="axis.orient === 'left' ? value.y : 0"
+            ss-x2="axis.orient === 'left' ? 0 : value.y"
+            ss-y2="axis.orient === 'left' ? value.y : 10"/>
+        <text ng-attr-text-anchor="{{axis.orient === 'left' ? 'end' : 'middle'}}" ssvg
+            ss-x="axis.orient === 'left' ? -10 : value.y"
+            ss-y="axis.orient === 'left' ? value.y : 30">
+          {{value.x}}
+        </text>
       </g>
     `,
     scope: {
     },
     bindToController: {
-      orient: '=ssOrient',
+      orient: '=ssAxis',
       ticks: '=ssTicks',
-      length: '=ssLength',
-      xStart: '=ssXStart',
-      xStop: '=ssXStop'
+      scale: '=ssScale'
     },
     controllerAs: 'axis',
     controller: class AxisController {
-      constructor() {
+      constructor($attrs) {
         this.values = [];
         for (let i = 0; i <= this.ticks; ++i) {
-          this.values.push(i * (this.xStop - this.xStart) / this.ticks + this.xStart);
+          const x = (this.scale.xMax - this.scale.xMin) * i / this.ticks;
+          this.values.push({
+            x: x,
+            y: this.scale.scale(x)
+          });
         }
       }
     }
