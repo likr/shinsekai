@@ -4,8 +4,8 @@ import Path from './path';
 
 angular.module('hoge', [shinsekai]);
 
-angular.module('hoge').constant('width', 500);
-angular.module('hoge').constant('height', 500);
+angular.module('hoge').constant('width', 800);
+angular.module('hoge').constant('height', 800);
 angular.module('hoge').constant('delay', 2000);
 angular.module('hoge').constant('count', Infinity);
 
@@ -201,7 +201,7 @@ angular.module('hoge').factory('paths', ($interval, width, height, delay, count)
 });
 
 angular.module('hoge').factory('polygons', ($interval, width, height, delay, count) => {
-  const n = 10,
+  const n = 5,
         polygons = [];
   for (let i = 0; i < n; ++i) {
     polygons.push({
@@ -236,6 +236,42 @@ angular.module('hoge').factory('polygons', ($interval, width, height, delay, cou
   return polygons;
 });
 
+angular.module('hoge').factory('polylines', ($interval, width, height, delay, count) => {
+  const n = 5,
+        polylines = [];
+  for (let i = 0; i < n; ++i) {
+    polylines.push({
+      points: [],
+      color: '#000',
+      opacity: 0.5,
+      duration: 1,
+      delay: 0
+    });
+    for (let j = 0; j < i + 3; ++j) {
+      polylines[i].points.push([width / 2, height / 2]);
+    }
+  }
+
+  $interval(() => {
+    for (const polyline of polylines) {
+      for (const point of polyline.points) {
+        point[0] = Math.random() * width;
+        point[1] = Math.random() * height;
+      }
+      polyline.y1 = Math.random() * height;
+      polyline.x2 = Math.random() * width;
+      polyline.y2 = Math.random() * height;
+      polyline.x3 = Math.random() * width;
+      polyline.y3 = Math.random() * height;
+      polyline.color = `hsl(${Math.random() * 360},100%,50%)`;
+      polyline.opacity = Math.random();
+      polyline.duration = Math.random() + 0.5;
+      polyline.delay = Math.random() * 0.5;
+    }
+  }, delay, count);
+  return polylines;
+});
+
 angular.module('hoge').directive('main', () => {
   return {
     restrict: 'E',
@@ -244,7 +280,7 @@ angular.module('hoge').directive('main', () => {
     },
     controllerAs: 'main',
     controller: class {
-      constructor(width, height, circles, ellipses, rects, lines, texts, paths, polygons) {
+      constructor(width, height, circles, ellipses, rects, lines, texts, paths, polygons, polylines) {
         this.width = width;
         this.height = height;
         this.circles = circles;
@@ -254,6 +290,7 @@ angular.module('hoge').directive('main', () => {
         this.texts = texts;
         this.paths = paths;
         this.polygons = polygons;
+        this.polylines = polylines;
       }
 
       pathFrom(x, y) {

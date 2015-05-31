@@ -22,6 +22,10 @@
     ss-dur="path.duration" ss-delay="path.delay" ng-repeat="path in main.paths"/>
   <polygon ssvg
     ss-points="main.points(polygon.points)"
-    fill="none" ss-stroke="polygon.color" ss-opacity="polygon.color"
+    fill="none" ss-stroke="polygon.color" ss-opacity="polygon.opacity"
     ss-dur="polygon.duration" ss-delay="polygon.delay" ng-repeat="polygon in main.polygons"/>
+  <polyline ssvg
+    ss-points="main.points(polyline.points)"
+    fill="none" ss-stroke="polyline.color" ss-opacity="polyline.opacity"
+    ss-dur="polyline.duration" ss-delay="polyline.delay" ng-repeat="polyline in main.polylines"/>
 </svg>

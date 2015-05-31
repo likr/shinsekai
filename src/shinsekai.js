@@ -89,6 +89,12 @@ angular.module('shinsekai').directive('ssvg', ($window) => {
       'fill',
       'stroke',
       'opacity'
+    ],
+    polyline: [
+      'points',
+      'fill',
+      'stroke',
+      'opacity'
     ]
   };
 
