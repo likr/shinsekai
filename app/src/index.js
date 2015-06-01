@@ -3,6 +3,7 @@ import ngRoute from 'angular-route';
 import simple from './simple';
 import random from './random';
 import barChart from './bar-chart';
+import lineChart from './line-chart';
 import scatterPlot from './scatter-plot'
 
 const moduleName = 'shinsekai-example';
@@ -12,6 +13,7 @@ angular.module(moduleName, [
   simple,
   random,
   barChart,
+  lineChart,
   scatterPlot
 ]);
 
@@ -25,6 +27,9 @@ angular.module(moduleName).config(($routeProvider) => {
     })
     .when('/bar-chart', {
       template: '<bar-chart></bar-chart>'
+    })
+    .when('/line-chart', {
+      template: '<line-chart></line-chart>'
     })
     .when('/scatter-plot', {
       controller: ($scope, data) => {

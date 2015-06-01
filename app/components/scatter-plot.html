@@ -33,15 +33,13 @@
         ss-ticks="scatterPlot.xTicks"
         ss-scale="scatterPlot.xScale"
         ss-format="scatterPlot.labelFormat"
-        ss-dur="0.3"
-        ss-delay="0"/>
+        ss-dur="0.3"/>
     <g transform="translate(50,50)"
         ss-axis="'left'"
         ss-ticks="scatterPlot.yTicks"
         ss-scale="scatterPlot.yScale"
         ss-format="scatterPlot.labelFormat"
-        ss-dur="0.3"
-        ss-delay="0"/>
+        ss-dur="0.3"/>
     <g transform="translate(50,50)">
       <circle
           r="5"
@@ -49,7 +47,6 @@
           ss-cy="scatterPlot.yScale.scale(datum[scatterPlot.yVariable])"
           ss-fill="scatterPlot.color(datum.species)"
           ss-dur="0.3"
-          ss-delay="0"
           ng-repeat="datum in scatterPlot.data"/>
     </g>
   </svg>

@@ -84,6 +84,11 @@ const directiveDefinition = (attrName, directiveName, tags) => {
           const dur = scope.$eval(attrs.ssDur),
                 delay = scope.$eval(attrs.ssDelay),
                 newValue = scope.$eval(attrs[directiveName]);
+          if (attrName === 'd' || attrName === 'points') {
+            if (attrs[directiveName + 'Update'] != null) {
+              oldValue = scope.$eval(attrs[directiveName + 'Update']);
+            }
+          }
           if (dur > 0) {
             const now = delay == null
                     ? svg.getCurrentTime()
