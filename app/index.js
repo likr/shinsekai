@@ -286,9 +286,9 @@ angular.module('hoge').directive('main', (Path, Scale) => {
       }
 
       path(points) {
-        const path = new Path(points[0][0], points[0][1]);
+        const path = new Path(this.xScale.scale(points[0][0]), this.yScale.scale(points[0][1]));
         for (let i = 1; i < points.length; ++i) {
-          path.lineTo(points[i][0], points[i][1]);
+          path.lineTo(this.xScale.scale(points[i][0]), this.yScale.scale(points[i][1]));
         }
         return path.close().toString();
       }
