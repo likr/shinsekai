@@ -7,9 +7,10 @@
     "lib"
   ],
   "scripts": {
-    "build": "browserify app/src/index.js -o app/app.js -t [ babelify --optional runtime ]",
+    "browserify": "browserify src/index.js -o shinsekai.js -t [ babelify --optional runtime ] -s shinsekai",
+    "build": "browserify app/src/index.js -o app/app.js --no-browser-field -t [ babelify --optional runtime ]",
     "release": "rm -rf lib && babel src --out-dir lib && npm publish",
-    "watch": "watchify app/src/index.js -o app/app.js -t [ babelify --optional runtime ] -v"
+    "watch": "watchify app/src/index.js -o app/app.js --no-browser-field -t [ babelify --optional runtime ] -v"
   },
   "author": "Yosuke ONOUE <onoue@likr-lab.com>",
   "license": "MIT",
@@ -18,12 +19,15 @@
     "visualization"
   ],
   "dependencies": {
-    "angular": "^1.4.0",
-    "angular-route": "^1.4.0"
+    "angular": "^1.4.0"
   },
   "devDependencies": {
+    "angular-route": "^1.4.0",
     "babelify": "^6.1.2",
-    "browserify": "^10.2.1",
+    "browserify": "^10.2.3",
     "watchify": "^3.2.1"
+  },
+  "browser": {
+    "angular": "./src/angular.js"
   }
 }

@@ -1,0 +1,27 @@
+{
+  "name": "shinsekai",
+  "main": "shinsekai.js",
+  "version": "0.0.3",
+  "homepage": "https://github.com/likr/shinsekai",
+  "authors": [
+    "Yosuke ONOUE <onoue@likr-lab.com>"
+  ],
+  "description": "Component based visualization framework for Angular",
+  "keywords": [
+    "angular",
+    "visualization"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app",
+    "lib",
+    "src",
+    "package.json"
+  ],
+  "dependencies": {
+    "angular": "~1.4.0"
+  }
+}
