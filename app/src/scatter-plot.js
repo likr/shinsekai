@@ -30,6 +30,8 @@ angular.module(moduleName).directive('scatterPlot', (Transform, Scale) => {
         ];
         this.xVariable = this.variables[0];
         this.yVariable = this.variables[1];
+        this.xTicks = 10;
+        this.yTicks = 10;
         this.xScale = new Scale()
           .range(0, width);
         this.yScale = new Scale()

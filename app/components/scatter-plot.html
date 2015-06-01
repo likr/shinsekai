@@ -16,6 +16,14 @@
         </label>
       </div>
     </div>
+    <div class="form-group">
+      <label>X Ticks</label>
+      <input type="number" class="form-control" ng-model="scatterPlot.xTicks" min="1" max="15"/>
+    </div>
+    <div class="form-group">
+      <label>Y Ticks</label>
+      <input type="number" class="form-control" ng-model="scatterPlot.yTicks" min="1" max="15"/>
+    </div>
   </form>
 </div>
 <div>
@@ -31,7 +39,7 @@
           ss-delay="0"
           ng-repeat="datum in scatterPlot.data"/>
     </g>
-    <g ng-attr-transform="{{scatterPlot.transform().translate(50,550).toString()}}" ss-axis="'bottom'" ss-ticks="10" ss-scale="scatterPlot.xScale" ss-format="scatterPlot.labelFormat"/>
-    <g transform="translate(50,50)" ss-axis="'left'" ss-ticks="10" ss-scale="scatterPlot.yScale" ss-format="scatterPlot.labelFormat"/>
+    <g ng-attr-transform="{{scatterPlot.transform().translate(50,550).toString()}}" ss-axis="'bottom'" ss-ticks="scatterPlot.xTicks" ss-scale="scatterPlot.xScale" ss-format="scatterPlot.labelFormat"/>
+    <g transform="translate(50,50)" ss-axis="'left'" ss-ticks="scatterPlot.yTicks" ss-scale="scatterPlot.yScale" ss-format="scatterPlot.labelFormat"/>
   </svg>
 </div>

@@ -11,19 +11,23 @@ angular.module('shinsekai.ss-axis', []).directive('ssAxis', [() => {
           ss-y1="axis.orient === 'left' ? axis.scale.yMin : 0"
           ss-x2="axis.orient === 'left' ? 0 : axis.scale.yMax"
           ss-y2="axis.orient === 'left' ? axis.scale.yMax : 0"/>
-      <g ng-repeat="i in axis.indices">
+      <g ng-repeat="i in axis.indices()">
         <line
             stroke="#000"
             ssvg
             ss-x1="axis.orient === 'left' ? -10 : axis.y(i)"
             ss-y1="axis.orient === 'left' ? axis.y(i) : 0"
             ss-x2="axis.orient === 'left' ? 0 : axis.y(i)"
-            ss-y2="axis.orient === 'left' ? axis.y(i) : 10"/>
+            ss-y2="axis.orient === 'left' ? axis.y(i) : 10"
+            ss-dur="0.3"
+            ss-delay="0"/>
         <text
             ng-attr-text-anchor="{{axis.orient === 'left' ? 'end' : 'middle'}}"
             ssvg
             ss-x="axis.orient === 'left' ? -10 : axis.y(i)"
-            ss-y="axis.orient === 'left' ? axis.y(i) : 30">
+            ss-y="axis.orient === 'left' ? axis.y(i) : 30"
+            ss-dur="0.3"
+            ss-delay="0">
           {{axis.format(axis.x(i))}}
         </text>
       </g>
@@ -42,11 +46,14 @@ angular.module('shinsekai.ss-axis', []).directive('ssAxis', [() => {
         if (this.format == null) {
           this.format = (x) => x;
         }
+      }
 
-        this.indices = [];
+      indices() {
+        const indices = [];
         for (let i = 0; i <= this.ticks; ++i) {
-          this.indices.push(i);
+          indices.push(i);
         }
+        return indices;
       }
 
       x(i) {
