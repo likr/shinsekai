@@ -17,14 +17,14 @@ angular.module('shinsekai.ss-axis', []).directive('ssAxis', [() => {
             ss-y1="axis.orient === 'left' ? axis.y(i) : 0"
             ss-x2="axis.orient === 'left' ? 0 : axis.y(i)"
             ss-y2="axis.orient === 'left' ? axis.y(i) : 10"
-            ss-dur="0.3"
-            ss-delay="0"/>
+            ss-dur="axis.duration"
+            ss-delay="axis.delay"/>
         <text
             ng-attr-text-anchor="{{axis.orient === 'left' ? 'end' : 'middle'}}"
             ss-x="axis.orient === 'left' ? -10 : axis.y(i)"
             ss-y="axis.orient === 'left' ? axis.y(i) : 30"
-            ss-dur="0.3"
-            ss-delay="0">
+            ss-dur="axis.duration"
+            ss-delay="axis.delay">
           {{axis.format(axis.x(i))}}
         </text>
       </g>
@@ -35,7 +35,9 @@ angular.module('shinsekai.ss-axis', []).directive('ssAxis', [() => {
       orient: '=ssAxis',
       ticks: '=ssTicks',
       scale: '=ssScale',
-      format: '=ssFormat'
+      format: '=ssFormat',
+      delay: '=ssDelay',
+      duration: '=ssDur'
     },
     controllerAs: 'axis',
     controller: class AxisController {
