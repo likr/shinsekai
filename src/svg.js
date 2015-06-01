@@ -4,6 +4,16 @@ const capitalize = (s) => {
   return s[0].toUpperCase() + s.substr(1);
 };
 
+const insertDummy = (svg, $window) => {
+  // insert dummy animate element for firefox implementation
+  const dummy = $window.document.getElementById('ss-dummy-animate');
+  if (dummy == null) {
+    const animate = $window.document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+    animate.setAttribute('id', 'ss-dummy-animate');
+    svg.appendChild(animate);
+  }
+};
+
 angular.module('shinsekai.ssvg', []).directive('ssvg', ($window) => {
   const createAnimate = (attr, value0, value, now, duration) => {
     const animate = $window.document.createElementNS('http://www.w3.org/2000/svg', 'animate');
@@ -28,9 +38,9 @@ angular.module('shinsekai.ssvg', []).directive('ssvg', ($window) => {
     }
     element.setAttribute(valueKey, scope[value0Key]);
     if (scope.dur > 0 || scope.delay > 0) {
-      scope.$watch(valueKey, () => {
-        const duration = scope.ssDur || 1,
-              delay = scope.ssDelay || 0.1,
+      scope.$watch(valueKey, (newValue, oldValue) => {
+        const duration = scope.dur,
+              delay = scope.delay,
               animate = createAnimate(
                 valueKey, scope[value0Key], scope[valueKey],
                 svg.getCurrentTime() + delay, duration);
@@ -127,7 +137,7 @@ angular.module('shinsekai.ssvg', []).directive('ssvg', ($window) => {
     link: (scope, elementWrapper, attrs) => {
       const element = elementWrapper[0],
             svg = element.ownerSVGElement;
-
+      insertDummy(svg, $window);
       for (const attrName of attributes[element.tagName] || []) {
         addAttribute(svg, element, `${attrName}0`, attrName, scope);
       }

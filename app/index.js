@@ -119,20 +119,16 @@ angular.module('hoge').factory('lines', ($interval, size, delay, count) => {
 angular.module('hoge').factory('paths', ($interval, size, delay, count) => {
   const n = 5,
         paths = [];
-  for (let i = 0; i < n; ++i) {
-    paths.push({
-      points: [],
-      color: '#000',
-      opacity: 0.5,
-      duration: 1,
-      delay: 0
-    });
-    for (let j = 0; j < 3; ++j) {
-      paths[i].points.push([size / 2, size / 2]);
-    }
-  }
-
   $interval(() => {
+    if (paths.length < n) {
+      const points = [];
+      for (let j = 0; j < 3; ++j) {
+        points.push([size / 2, size / 2]);
+      }
+      paths.push({
+        points: points
+      });
+    }
     for (const path of paths) {
       for (const point of path.points) {
         point[0] = Math.random() * size;
@@ -150,20 +146,16 @@ angular.module('hoge').factory('paths', ($interval, size, delay, count) => {
 angular.module('hoge').factory('polygons', ($interval, size, delay, count) => {
   const n = 5,
         polygons = [];
-  for (let i = 0; i < n; ++i) {
-    polygons.push({
-      points: [],
-      color: '#000',
-      opacity: 0.5,
-      duration: 1,
-      delay: 0
-    });
-    for (let j = 0; j < i + 3; ++j) {
-      polygons[i].points.push([size / 2, size / 2]);
-    }
-  }
-
   $interval(() => {
+    if (polygons.length < n) {
+      const points = [];
+      for (let j = 0; j < polygons.length + 3; ++j) {
+        points.push([size / 2, size / 2]);
+      }
+      polygons.push({
+        points: points
+      });
+    }
     for (const polygon of polygons) {
       for (const point of polygon.points) {
         point[0] = Math.random() * size;
@@ -181,20 +173,16 @@ angular.module('hoge').factory('polygons', ($interval, size, delay, count) => {
 angular.module('hoge').factory('polylines', ($interval, size, delay, count) => {
   const n = 5,
         polylines = [];
-  for (let i = 0; i < n; ++i) {
-    polylines.push({
-      points: [],
-      color: '#000',
-      opacity: 0.5,
-      duration: 1,
-      delay: 0
-    });
-    for (let j = 0; j < i + 3; ++j) {
-      polylines[i].points.push([size / 2, size / 2]);
-    }
-  }
-
   $interval(() => {
+    if (polylines.length < n) {
+      const points = [];
+      for (let j = 0; j < polylines.length + 3; ++j) {
+        points.push([size / 2, size / 2]);
+      }
+      polylines.push({
+        points: points
+      });
+    }
     for (const polyline of polylines) {
       for (const point of polyline.points) {
         point[0] = Math.random() * size;
@@ -247,6 +235,14 @@ angular.module('hoge').directive('main', (Path, Scale) => {
 
       points(points) {
         return points.map(p => `${this.xScale.scale(p[0])},${this.yScale.scale(p[1])}`).join(' ');
+      }
+
+      initialPath(points) {
+        return this.path(points.map(() => [0, 0]));
+      }
+
+      initialPoints(points) {
+        return this.points(points.map(() => [0, 0]));
       }
     }
   };

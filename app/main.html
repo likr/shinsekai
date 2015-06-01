@@ -93,6 +93,9 @@
         ss-d="main.path(path.points)"
         ss-stroke="path.color"
         ss-opacity="path.opacity"
+        ss-d-enter="main.initialPath(path.points)"
+        ss-stroke-enter="'#000'"
+        ss-opacity-enter="1"
         ss-dur="path.duration"
         ss-delay="path.delay"
         ng-repeat="path in main.paths"/>
@@ -102,6 +105,9 @@
         ss-points="main.points(polygon.points)"
         ss-stroke="polygon.color"
         ss-opacity="polygon.opacity"
+        ss-points-enter="main.initialPoints(polygon.points)"
+        ss-stroke-enter="'#000'"
+        ss-opacity-enter="1"
         ss-dur="polygon.duration"
         ss-delay="polygon.delay"
         ng-repeat="polygon in main.polygons"/>
@@ -111,6 +117,9 @@
         ss-points="main.points(polyline.points)"
         ss-stroke="polyline.color"
         ss-opacity="polyline.opacity"
+        ss-points-enter="main.initialPoints(polyline.points)"
+        ss-stroke-enter="'#000'"
+        ss-opacity-enter="1"
         ss-dur="polyline.duration"
         ss-delay="polyline.delay"
         ng-repeat="polyline in main.polylines"/>
