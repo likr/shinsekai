@@ -1,7 +1,6 @@
 <svg ng-attr-width="{{random.width + 100}}" ng-attr-height="{{random.height + 100}}">
   <g transform="translate(50,50)">
     <circle
-        ssvg
         ss-cx="random.xScale.scale(circle.x)"
         ss-cy="random.yScale.scale(circle.y)"
         ss-r="circle.r"
@@ -18,7 +17,6 @@
         ss-delay="circle.delay"
         ng-repeat="circle in random.circles"/>
     <ellipse
-        ssvg
         ss-cx="random.xScale.scale(ellipse.x)"
         ss-cy="random.yScale.scale(ellipse.y)"
         ss-rx="ellipse.rx"
@@ -37,7 +35,6 @@
         ss-delay="ellipse.delay"
         ng-repeat="ellipse in random.ellipses"/>
     <rect
-        ssvg
         ss-x="random.xScale.scale(rect.x)"
         ss-y="random.yScale.scale(rect.y)"
         ss-width="rect.width"
@@ -56,7 +53,6 @@
         ss-delay="rect.delay"
         ng-repeat="rect in random.rects"/>
     <line
-        ssvg
         ss-x1="random.xScale.scale(line.x1)"
         ss-y1="random.yScale.scale(line.y1)"
         ss-x2="random.xScale.scale(line.x2)"
@@ -73,7 +69,6 @@
         ss-delay="line.delay"
         ng-repeat="line in random.lines"/>
     <text
-        ssvg
         ss-x="random.xScale.scale(text.x)"
         ss-y="random.yScale.scale(text.y)"
         ss-fill="text.color"
@@ -89,7 +84,6 @@
     </text>
     <path
         fill="none"
-        ssvg
         ss-d="random.path(path.points)"
         ss-stroke="path.color"
         ss-opacity="path.opacity"
@@ -101,7 +95,6 @@
         ng-repeat="path in random.paths"/>
     <polygon
         fill="none"
-        ssvg
         ss-points="random.points(polygon.points)"
         ss-stroke="polygon.color"
         ss-opacity="polygon.opacity"
@@ -113,7 +106,6 @@
         ng-repeat="polygon in random.polygons"/>
     <polyline
         fill="none"
-        ssvg
         ss-points="random.points(polyline.points)"
         ss-stroke="polyline.color"
         ss-opacity="polyline.opacity"

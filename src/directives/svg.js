@@ -26,130 +26,93 @@ const createAnimate = ($window, attr, value0, value, now, duration) => {
   return animate;
 };
 
-const addAttribute = ($window, svg, element, value0Key, valueKey, scope) => {
-  if (scope[valueKey] == null) {
-    return;
-  }
-  if (scope[valueKey + 'Enter'] != null) {
-    scope[value0Key] = scope[valueKey + 'Enter'];
-  } else {
-    scope[value0Key] = scope[valueKey];
-  }
-  element.setAttribute(valueKey, scope[value0Key]);
-  scope.$watch(valueKey, () => {
-    if (scope.dur > 0) {
-      const duration = scope.dur,
-            delay = scope.delay || 0,
-            animate = createAnimate(
-              $window,
-              valueKey, scope[value0Key], scope[valueKey],
-              svg.getCurrentTime() + delay, duration);
-      element.appendChild(animate);
-      animate.addEventListener('endEvent', () => {
-        element.setAttribute(valueKey, scope[value0Key]);
-        element.removeChild(animate);
-      });
-      scope[value0Key] = scope[valueKey];
-    } else if (scope.delay > 0) {
-      $window.setTimeout(() => {
-        element.setAttribute(valueKey, scope[valueKey]);
-      }, scope.delay * 1000);
-    } else {
-      element.setAttribute(valueKey, scope[valueKey]);
-    }
-  });
-};
-
+const all = [
+  'circle',
+  'ellipse',
+  'rect',
+  'line',
+  'path',
+  'polygon',
+  'polyline',
+  'text'
+];
 const attributes = {
-  circle: [
-    'cx',
-    'cy',
-    'r',
-    'fill',
-    'stroke',
-    'opacity'
-  ],
-  rect: [
-    'x',
-    'y',
-    'width',
-    'height',
-    'fill',
-    'stroke',
-    'opacity'
-  ],
-  line: [
-    'x1',
-    'y1',
-    'x2',
-    'y2',
-    'fill',
-    'stroke',
-    'opacity'
-  ],
-  text: [
-    'x',
-    'y',
-    'fill',
-    'stroke',
-    'opacity'
-  ],
-  path: [
-    'd',
-    'fill',
-    'stroke',
-    'opacity'
-  ],
-  ellipse: [
-    'cx',
-    'cy',
-    'rx',
-    'ry',
-    'fill',
-    'stroke',
-    'opacity'
-  ],
-  polygon: [
-    'points',
-    'fill',
-    'stroke',
-    'opacity'
-  ],
-  polyline: [
-    'points',
-    'fill',
-    'stroke',
-    'opacity'
-  ]
+  cx: ['circle', 'ellipse'],
+  cy: ['circle', 'ellipse'],
+  r: ['circle'],
+  rx: ['ellipse'],
+  ry: ['ellipse'],
+  x: ['rect', 'text'],
+  y: ['rect', 'text'],
+  width: ['rect'],
+  height: ['rect'],
+  x1: ['line'],
+  y1: ['line'],
+  x2: ['line'],
+  y2: ['line'],
+  d: ['path'],
+  points: ['polygon', 'polyline'],
+  fill: all,
+  stroke: all,
+  opacity: all
 };
 
-const isolatedScope = {
-  dur: '=ssDur',
-  delay: '=ssDelay'
+
+const moduleName = 'shinsekai.directives.attributes';
+
+angular.module(moduleName, []);
+
+const directiveDefinition = (attrName, directiveName, tags) => {
+  return ['$window', ($window) => {
+    return {
+      restrict: 'A',
+      link: (scope, elementWrapper, attrs) => {
+        const element = elementWrapper[0],
+              tagName = element.tagName,
+              svg = element.ownerSVGElement;
+        if (tags.indexOf(tagName) < 0) {
+          throw new Error(`${attrName} is not allowed for ${tagName}`);
+        }
+
+        insertDummy(svg, $window);
+
+        let oldValue = attrs[directiveName + 'Enter'] == null
+          ? scope.$eval(attrs[directiveName])
+          : scope.$eval(attrs[directiveName + 'Enter']);
+        element.setAttribute(attrName, oldValue);
+        scope.$watch(attrs[directiveName], () => {
+          const dur = scope.$eval(attrs.ssDur),
+                delay = scope.$eval(attrs.ssDelay),
+                newValue = scope.$eval(attrs[directiveName]);
+          if (dur > 0) {
+            const now = delay == null
+                    ? svg.getCurrentTime()
+                    : svg.getCurrentTime() + delay,
+                  animate = createAnimate($window, attrName, oldValue, newValue, now, dur);
+            element.appendChild(animate);
+            animate.addEventListener('endEvent', () => {
+              element.setAttribute(attrName, oldValue);
+              element.removeChild(animate);
+            });
+            oldValue = newValue;
+          } else if (delay > 0) {
+            $window.setTimeout(() => {
+              element.setAttribute(attrName, newValue);
+            }, delay * 1000);
+          } else {
+            element.setAttribute(attrName, newValue);
+          }
+        });
+      }
+    };
+  }];
 };
-for (const tagName in attributes) {
-  for (const attrName of attributes[tagName]) {
-    if (isolatedScope[attrName] == null) {
-      const val = `=ss${capitalize(attrName)}`;
-      isolatedScope[attrName] = val;
-      isolatedScope[attrName + 'Enter'] = val + 'Enter';
-    }
-  }
+
+for (const attrName in attributes) {
+  const tags = attributes[attrName],
+        directiveName = `ss${capitalize(attrName)}`;
+  angular.module(moduleName)
+    .directive(directiveName, directiveDefinition(attrName, directiveName, tags));
 }
 
-angular.module('shinsekai.ssvg', []).directive('ssvg', ['$window', ($window) => {
-  return {
-    restrict: 'A',
-    scope: isolatedScope,
-    link: (scope, elementWrapper, attrs) => {
-      const element = elementWrapper[0],
-            svg = element.ownerSVGElement;
-      insertDummy(svg, $window);
-      for (const attrName of attributes[element.tagName] || []) {
-        addAttribute($window, svg, element, `${attrName}0`, attrName, scope);
-      }
-    }
-  };
-}]);
-
-export default 'shinsekai.ssvg';
+export default moduleName;

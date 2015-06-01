@@ -6,7 +6,6 @@ angular.module('shinsekai.ss-axis', []).directive('ssAxis', [() => {
     template: `
       <line
           stroke="#000"
-          ssvg
           ss-x1="axis.orient === 'left' ? 0 : axis.scale.yMin"
           ss-y1="axis.orient === 'left' ? axis.scale.yMin : 0"
           ss-x2="axis.orient === 'left' ? 0 : axis.scale.yMax"
@@ -14,7 +13,6 @@ angular.module('shinsekai.ss-axis', []).directive('ssAxis', [() => {
       <g ng-repeat="i in axis.indices()">
         <line
             stroke="#000"
-            ssvg
             ss-x1="axis.orient === 'left' ? -10 : axis.y(i)"
             ss-y1="axis.orient === 'left' ? axis.y(i) : 0"
             ss-x2="axis.orient === 'left' ? 0 : axis.y(i)"
@@ -23,7 +21,6 @@ angular.module('shinsekai.ss-axis', []).directive('ssAxis', [() => {
             ss-delay="0"/>
         <text
             ng-attr-text-anchor="{{axis.orient === 'left' ? 'end' : 'middle'}}"
-            ssvg
             ss-x="axis.orient === 'left' ? -10 : axis.y(i)"
             ss-y="axis.orient === 'left' ? axis.y(i) : 30"
             ss-dur="0.3"

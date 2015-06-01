@@ -1,5 +1,5 @@
 <div>
-  <form ng-submit="barChart.add()">
+  <form>
     <div class="form-group">
       <label>Label</label>
       <input class="form-control" ng-model="barChart.newLabel"/>
@@ -20,15 +20,13 @@
       <g ng-repeat="datum in barChart.data">
         <rect
             width="20"
-            ssvg
             ss-x="30 * $index + 5"
             ss-y="barChart.yScale.scale(datum.value)"
             ss-y-enter="barChart.yScale.scale(0)"
             ss-height="barChart.yScale.scale(0) - barChart.yScale.scale(datum.value)"
             ss-height-enter="0"
             ss-fill="datum.color"
-            ss-dur="0.3"
-            ss-delay="0"/>
+            ss-dur="0.3"/>
         <text
             text-anchor="end"
             ss-transform="barChart.transform().translate(30 * $index + 25, barChart.yScale.scale(0) + 10).rotate(-60)">
@@ -43,7 +41,6 @@
           y1="0"
           y2="0"
           stroke="#000"
-          ssvg
           ss-x2="barChart.width"/>
     </g>
   </svg>
