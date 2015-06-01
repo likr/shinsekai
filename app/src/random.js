@@ -1,15 +1,17 @@
 import angular from 'angular';
-import shinsekai from '../src';
+import shinsekai from '../../src';
 
-angular.module('hoge', [shinsekai]);
+const moduleName = 'shinsekai-example.random';
 
-angular.module('hoge').constant('size', 100);
-angular.module('hoge').constant('width', 800);
-angular.module('hoge').constant('height', 800);
-angular.module('hoge').constant('delay', 2000);
-angular.module('hoge').constant('count', Infinity);
+angular.module(moduleName, [shinsekai]);
 
-angular.module('hoge').factory('circles', ($interval, size, delay, count) => {
+angular.module(moduleName).constant('size', 100);
+angular.module(moduleName).constant('width', 800);
+angular.module(moduleName).constant('height', 800);
+angular.module(moduleName).constant('delay', 2000);
+angular.module(moduleName).constant('count', Infinity);
+
+angular.module(moduleName).factory('circles', ($interval, size, delay, count) => {
   const n = 10,
         circles = [];
   $interval(() => {
@@ -30,7 +32,7 @@ angular.module('hoge').factory('circles', ($interval, size, delay, count) => {
   return circles;
 });
 
-angular.module('hoge').factory('ellipses', ($interval, size, delay, count) => {
+angular.module(moduleName).factory('ellipses', ($interval, size, delay, count) => {
   const n = 10,
         ellipses = [];
   $interval(() => {
@@ -52,7 +54,7 @@ angular.module('hoge').factory('ellipses', ($interval, size, delay, count) => {
   return ellipses;
 });
 
-angular.module('hoge').factory('rects', ($interval, size, delay, count) => {
+angular.module(moduleName).factory('rects', ($interval, size, delay, count) => {
   const n = 10,
         rects = [];
   $interval(() => {
@@ -74,7 +76,7 @@ angular.module('hoge').factory('rects', ($interval, size, delay, count) => {
   return rects;
 });
 
-angular.module('hoge').factory('texts', ($interval, size, delay, count) => {
+angular.module(moduleName).factory('texts', ($interval, size, delay, count) => {
   const n = 10,
         texts = [];
   $interval(() => {
@@ -95,7 +97,7 @@ angular.module('hoge').factory('texts', ($interval, size, delay, count) => {
   return texts;
 });
 
-angular.module('hoge').factory('lines', ($interval, size, delay, count) => {
+angular.module(moduleName).factory('lines', ($interval, size, delay, count) => {
   const n = 10,
         lines = [];
   $interval(() => {
@@ -116,7 +118,7 @@ angular.module('hoge').factory('lines', ($interval, size, delay, count) => {
   return lines;
 });
 
-angular.module('hoge').factory('paths', ($interval, size, delay, count) => {
+angular.module(moduleName).factory('paths', ($interval, size, delay, count) => {
   const n = 5,
         paths = [];
   $interval(() => {
@@ -143,7 +145,7 @@ angular.module('hoge').factory('paths', ($interval, size, delay, count) => {
   return paths;
 });
 
-angular.module('hoge').factory('polygons', ($interval, size, delay, count) => {
+angular.module(moduleName).factory('polygons', ($interval, size, delay, count) => {
   const n = 5,
         polygons = [];
   $interval(() => {
@@ -170,7 +172,7 @@ angular.module('hoge').factory('polygons', ($interval, size, delay, count) => {
   return polygons;
 });
 
-angular.module('hoge').factory('polylines', ($interval, size, delay, count) => {
+angular.module(moduleName).factory('polylines', ($interval, size, delay, count) => {
   const n = 5,
         polylines = [];
   $interval(() => {
@@ -197,13 +199,13 @@ angular.module('hoge').factory('polylines', ($interval, size, delay, count) => {
   return polylines;
 });
 
-angular.module('hoge').directive('main', (Path, Scale) => {
+angular.module(moduleName).directive('random', (Path, Scale) => {
   return {
     restrict: 'E',
-    templateUrl: 'main.html',
+    templateUrl: 'random.html',
     scope: {
     },
-    controllerAs: 'main',
+    controllerAs: 'random',
     controller: class {
       constructor(size, width, height, circles, ellipses, rects, lines, texts, paths, polygons, polylines) {
         this.size = size;
@@ -247,3 +249,5 @@ angular.module('hoge').directive('main', (Path, Scale) => {
     }
   };
 });
+
+export default moduleName;

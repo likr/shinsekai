@@ -3,11 +3,13 @@
   "version": "0.0.2",
   "description": "Component based visualization framework for Angular",
   "main": "lib/index.js",
-  "files": ["lib"],
+  "files": [
+    "lib"
+  ],
   "scripts": {
-    "build": "browserify app/index.js -o app/app.js -t [ babelify --optional runtime ]",
+    "build": "browserify app/src/index.js -o app/app.js -t [ babelify --optional runtime ]",
     "release": "rm -rf lib && babel src --out-dir lib && npm publish",
-    "watch": "watchify app/index.js -o app/app.js -t [ babelify --optional runtime ] -v"
+    "watch": "watchify app/src/index.js -o app/app.js -t [ babelify --optional runtime ] -v"
   },
   "author": "Yosuke ONOUE <onoue@likr-lab.com>",
   "license": "MIT",
@@ -16,7 +18,8 @@
     "visualization"
   ],
   "dependencies": {
-    "angular": "^1.4.0"
+    "angular": "^1.4.0",
+    "angular-route": "^1.4.0"
   },
   "devDependencies": {
     "babelify": "^6.1.2",
