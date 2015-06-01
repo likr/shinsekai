@@ -43,6 +43,8 @@ angular.module('example', [shinsekai]);
 
 # Example
 
+https://jsfiddle.net/9mdjvh1o/
+
 ```
 <!DOCTYPE html>
 <html>
@@ -88,6 +90,8 @@ angular.module('shinsekai-example', ['shinsekai'])
 </body>
 </html>
 ```
+
+[Another example](http://likr.github.io/shinsekai-proto/)
 
 # Lisence
 
