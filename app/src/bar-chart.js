@@ -5,7 +5,7 @@ const moduleName = 'shinsekai-example.bar-chart';
 
 angular.module(moduleName, [shinsekai]);
 
-angular.module(moduleName).directive('barChart', (Scale) => {
+angular.module(moduleName).directive('barChart', (Transform, Scale) => {
   const height = 500,
         width = 800,
         initialLabel = 'label',
@@ -40,6 +40,10 @@ angular.module(moduleName).directive('barChart', (Scale) => {
 
       clear() {
         this.data = [];
+      }
+
+      transform() {
+        return new Transform();
       }
     }
   };
