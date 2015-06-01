@@ -36,10 +36,10 @@ const addAttribute = ($window, svg, element, value0Key, valueKey, scope) => {
     scope[value0Key] = scope[valueKey];
   }
   element.setAttribute(valueKey, scope[value0Key]);
-  if (scope.dur > 0 || scope.delay > 0) {
-    scope.$watch(valueKey, (newValue, oldValue) => {
+  scope.$watch(valueKey, () => {
+    if (scope.dur > 0) {
       const duration = scope.dur,
-            delay = scope.delay,
+            delay = scope.delay || 0,
             animate = createAnimate(
               $window,
               valueKey, scope[value0Key], scope[valueKey],
@@ -50,8 +50,14 @@ const addAttribute = ($window, svg, element, value0Key, valueKey, scope) => {
         element.removeChild(animate);
       });
       scope[value0Key] = scope[valueKey];
-    });
-  }
+    } else if (scope.delay > 0) {
+      $window.setTimeout(() => {
+        element.setAttribute(valueKey, scope[valueKey]);
+      }, scope.delay * 1000);
+    } else {
+      element.setAttribute(valueKey, scope[valueKey]);
+    }
+  });
 };
 
 const attributes = {

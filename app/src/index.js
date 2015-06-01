@@ -1,5 +1,6 @@
 import angular from 'angular';
 import ngRoute from 'angular-route';
+import simple from './simple';
 import random from './random';
 import barChart from './bar-chart';
 import scatterPlot from './scatter-plot'
@@ -8,6 +9,7 @@ const moduleName = 'shinsekai-example';
 
 angular.module(moduleName, [
   ngRoute,
+  simple,
   random,
   barChart,
   scatterPlot
@@ -15,6 +17,9 @@ angular.module(moduleName, [
 
 angular.module(moduleName).config(($routeProvider) => {
   $routeProvider
+    .when('/simple', {
+      template: '<simple></simple>'
+    })
     .when('/random', {
       template: '<random></random>'
     })
