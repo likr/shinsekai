@@ -60,8 +60,8 @@ class Transform {
   }
 }
 
-angular.module('shinsekai.transform', []).factory('Transform', () => {
+angular.module('shinsekai.transform', []).factory('Transform', [() => {
   return Transform;
-});
+}]);
 
 export default 'shinsekai.transform';

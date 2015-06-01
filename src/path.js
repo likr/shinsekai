@@ -20,8 +20,8 @@ class Path {
   }
 }
 
-angular.module('shinsekai.path', []).factory('Path', () => {
+angular.module('shinsekai.path', []).factory('Path', [() => {
   return Path;
-});
+}]);
 
 export default 'shinsekai.path';

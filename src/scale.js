@@ -26,8 +26,8 @@ class Scale {
   }
 }
 
-angular.module('shinsekai.scale', []).factory('Scale', () => {
+angular.module('shinsekai.scale', []).factory('Scale', [() => {
   return Scale;
-});
+}]);
 
 export default 'shinsekai.scale';

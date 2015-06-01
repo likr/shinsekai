@@ -1,6 +1,6 @@
 import angular from 'angular';
 
-angular.module('shinsekai.ss-axis', []).directive('ssAxis', () => {
+angular.module('shinsekai.ss-axis', []).directive('ssAxis', [() => {
   return {
     restrict: 'A',
     template: `
@@ -49,6 +49,6 @@ angular.module('shinsekai.ss-axis', []).directive('ssAxis', () => {
       }
     }
   };
-});
+}]);
 
 export default 'shinsekai.ss-axis';
