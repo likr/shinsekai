@@ -31,13 +31,13 @@
             ss-delay="0"/>
         <text
             text-anchor="end"
-            ng-attr-transform="{{barChart.transform().translate(30 * $index + 25, barChart.yScale.scale(0) + 10).rotate(-60).toString()}}">
+            ss-transform="barChart.transform().translate(30 * $index + 25, barChart.yScale.scale(0) + 10).rotate(-60)">
           {{datum.label}}
         </text>
       </g>
     </g>
     <g transform="translate(50,50)" ss-axis="'left'" ss-ticks="10" ss-scale="barChart.yScale"/>
-    <g ng-attr-transform="{{barChart.transform().translate(50, barChart.height + 50).toString()}}">
+    <g ss-transform="barChart.transform().translate(50, barChart.height + 50)">
       <line
           x1="0"
           y1="0"

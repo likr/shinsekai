@@ -39,7 +39,7 @@
           ss-delay="0"
           ng-repeat="datum in scatterPlot.data"/>
     </g>
-    <g ng-attr-transform="{{scatterPlot.transform().translate(50,550).toString()}}" ss-axis="'bottom'" ss-ticks="scatterPlot.xTicks" ss-scale="scatterPlot.xScale" ss-format="scatterPlot.labelFormat"/>
+    <g ss-transform="scatterPlot.transform().translate(50,550)" ss-axis="'bottom'" ss-ticks="scatterPlot.xTicks" ss-scale="scatterPlot.xScale" ss-format="scatterPlot.labelFormat"/>
     <g transform="translate(50,50)" ss-axis="'left'" ss-ticks="scatterPlot.yTicks" ss-scale="scatterPlot.yScale" ss-format="scatterPlot.labelFormat"/>
   </svg>
 </div>
