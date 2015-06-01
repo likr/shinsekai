@@ -1,5 +1,9 @@
 import angular from 'angular';
 
+const capitalize = (s) => {
+  return s[0].toUpperCase() + s.substr(1);
+};
+
 angular.module('shinsekai.ssvg', []).directive('ssvg', ($window) => {
   const createAnimate = (attr, value0, value, now, duration) => {
     const animate = $window.document.createElementNS('http://www.w3.org/2000/svg', 'animate');
@@ -17,7 +21,11 @@ angular.module('shinsekai.ssvg', []).directive('ssvg', ($window) => {
     if (scope[valueKey] == null) {
       return;
     }
-    scope[value0Key] = scope[valueKey];
+    if (scope[valueKey + 'Enter'] != null) {
+      scope[value0Key] = scope[valueKey + 'Enter'];
+    } else {
+      scope[value0Key] = scope[valueKey];
+    }
     element.setAttribute(valueKey, scope[value0Key]);
     if (scope.dur > 0 || scope.delay > 0) {
       scope.$watch(valueKey, () => {
@@ -99,30 +107,23 @@ angular.module('shinsekai.ssvg', []).directive('ssvg', ($window) => {
     ]
   };
 
+  const isolatedScope = {
+    dur: '=ssDur',
+    delay: '=ssDelay'
+  };
+  for (const tagName in attributes) {
+    for (const attrName of attributes[tagName]) {
+      if (isolatedScope[attrName] == null) {
+        const val = `=ss${capitalize(attrName)}`;
+        isolatedScope[attrName] = val;
+        isolatedScope[attrName + 'Enter'] = val + 'Enter';
+      }
+    }
+  }
+
   return {
     restrict: 'A',
-    scope: {
-      cx: '=ssCx',
-      cy: '=ssCy',
-      r: '=ssR',
-      rx: '=ssRx',
-      ry: '=ssRy',
-      x: '=ssX',
-      y: '=ssY',
-      x1: '=ssX1',
-      y1: '=ssY1',
-      x2: '=ssX2',
-      y2: '=ssY2',
-      width: '=ssWidth',
-      height: '=ssHeight',
-      d: '=ssD',
-      points: '=ssPoints',
-      fill: '=ssFill',
-      stroke: '=ssStroke',
-      opacity: '=ssOpacity',
-      dur: '=ssDur',
-      delay: '=ssDelay'
-    },
+    scope: isolatedScope,
     link: (scope, elementWrapper, attrs) => {
       const element = elementWrapper[0],
             svg = element.ownerSVGElement;

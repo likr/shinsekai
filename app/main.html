@@ -8,6 +8,12 @@
         ss-fill="circle.color"
         ss-stroke="circle.strokeColor"
         ss-opacity="circle.opacity"
+        ss-cx-enter="main.xScale.scale(0)"
+        ss-cy-enter="main.yScale.scale(0)"
+        ss-r-enter="5"
+        ss-fill-enter="'#000'"
+        ss-stroke-enter="'#000'"
+        ss-opacity-enter="1"
         ss-dur="circle.duration"
         ss-delay="circle.delay"
         ng-repeat="circle in main.circles"/>
@@ -20,6 +26,13 @@
         ss-fill="ellipse.color"
         ss-stroke="ellipse.strokeColor"
         ss-opacity="ellipse.opacity"
+        ss-cx-enter="main.xScale.scale(0)"
+        ss-cy-enter="main.yScale.scale(0)"
+        ss-rx-enter="5"
+        ss-ry-enter="5"
+        ss-fill-enter="'#000'"
+        ss-stroke-enter="'#000'"
+        ss-opacity-enter="1"
         ss-dur="ellipse.duration"
         ss-delay="ellipse.delay"
         ng-repeat="ellipse in main.ellipses"/>
@@ -32,6 +45,13 @@
         ss-fill="rect.color"
         ss-stroke="rect.strokeColor"
         ss-opacity="rect.opacity"
+        ss-x-enter="main.xScale.scale(0)"
+        ss-y-enter="main.yScale.scale(0)"
+        ss-width-enter="10"
+        ss-height-enter="10"
+        ss-fill-enter="'#000'"
+        ss-stroke-enter="'#000'"
+        ss-opacity-enter="1"
         ss-dur="rect.duration"
         ss-delay="rect.delay"
         ng-repeat="rect in main.rects"/>
@@ -43,6 +63,12 @@
         ss-y2="main.yScale.scale(line.y2)"
         ss-stroke="line.color"
         ss-opacity="line.opacity"
+        ss-x1-enter="main.xScale.scale(0)"
+        ss-y1-enter="main.yScale.scale(0)"
+        ss-x2-enter="main.xScale.scale(0)"
+        ss-y2-enter="main.yScale.scale(0)"
+        ss-stroke-enter="'#000'"
+        ss-opacity-enter="1"
         ss-dur="line.duration"
         ss-delay="line.delay"
         ng-repeat="line in main.lines"/>
@@ -52,33 +78,37 @@
         ss-y="main.yScale.scale(text.y)"
         ss-fill="text.color"
         ss-opacity="text.opacity"
+        ss-x-enter="main.xScale.scale(0)"
+        ss-y-enter="main.yScale.scale(0)"
+        ss-fill-enter="'#000'"
+        ss-opacity-enter="1"
         ss-dur="text.duration"
         ss-delay="text.delay"
         ng-repeat="text in main.texts">
       {{text.text}}
     </text>
     <path
+        fill="none"
         ssvg
         ss-d="main.path(path.points)"
-        fill="none"
         ss-stroke="path.color"
         ss-opacity="path.opacity"
         ss-dur="path.duration"
         ss-delay="path.delay"
         ng-repeat="path in main.paths"/>
     <polygon
+        fill="none"
         ssvg
         ss-points="main.points(polygon.points)"
-        fill="none"
         ss-stroke="polygon.color"
         ss-opacity="polygon.opacity"
         ss-dur="polygon.duration"
         ss-delay="polygon.delay"
         ng-repeat="polygon in main.polygons"/>
     <polyline
+        fill="none"
         ssvg
         ss-points="main.points(polyline.points)"
-        fill="none"
         ss-stroke="polyline.color"
         ss-opacity="polyline.opacity"
         ss-dur="polyline.duration"

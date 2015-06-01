@@ -12,20 +12,10 @@ angular.module('hoge').constant('count', Infinity);
 angular.module('hoge').factory('circles', ($interval, size, delay, count) => {
   const n = 10,
         circles = [];
-  for (let i = 0; i < n; ++i) {
-    circles.push({
-      x: size / 2,
-      y: size / 2,
-      r: 5,
-      color: '#000',
-      strokeColor: '#000',
-      opacity: 0.5,
-      duration: 1,
-      delay: 0
-    });
-  }
-
   $interval(() => {
+    if (circles.length < n) {
+      circles.push({});
+    }
     for (const circle of circles) {
       circle.x = Math.random() * size;
       circle.y = Math.random() * size;
@@ -43,21 +33,10 @@ angular.module('hoge').factory('circles', ($interval, size, delay, count) => {
 angular.module('hoge').factory('ellipses', ($interval, size, delay, count) => {
   const n = 10,
         ellipses = [];
-  for (let i = 0; i < n; ++i) {
-    ellipses.push({
-      x: size / 2,
-      y: size / 2,
-      rx: 5,
-      ry: 5,
-      color: '#000',
-      strokeColor: '#000',
-      opacity: 0.5,
-      duration: 1,
-      delay: 0
-    });
-  }
-
   $interval(() => {
+    if (ellipses.length < n) {
+      ellipses.push({});
+    }
     for (const ellipse of ellipses) {
       ellipse.x = Math.random() * size;
       ellipse.y = Math.random() * size;
@@ -76,21 +55,10 @@ angular.module('hoge').factory('ellipses', ($interval, size, delay, count) => {
 angular.module('hoge').factory('rects', ($interval, size, delay, count) => {
   const n = 10,
         rects = [];
-  for (let i = 0; i < n; ++i) {
-    rects.push({
-      x: size / 2,
-      y: size / 2,
-      width: 5,
-      height: 5,
-      color: '#000',
-      strokeColor: '#000',
-      opacity: 0.5,
-      duration: 1,
-      delay: 0
-    });
-  }
-
   $interval(() => {
+    if (rects.length < n) {
+      rects.push({});
+    }
     for (const rect of rects) {
       rect.x = Math.random() * size;
       rect.y = Math.random() * size;
@@ -109,19 +77,12 @@ angular.module('hoge').factory('rects', ($interval, size, delay, count) => {
 angular.module('hoge').factory('texts', ($interval, size, delay, count) => {
   const n = 10,
         texts = [];
-  for (let i = 0; i < n; ++i) {
-    texts.push({
-      text: 'imai',
-      x: size / 2,
-      y: size / 2,
-      color: '#000',
-      opacity: 0.5,
-      duration: 1,
-      delay: 0
-    });
-  }
-
   $interval(() => {
+    if (texts.length < n) {
+      texts.push({
+        text: 'imai'
+      });
+    }
     for (const text of texts) {
       text.x = Math.random() * size;
       text.y = Math.random() * size;
@@ -137,20 +98,10 @@ angular.module('hoge').factory('texts', ($interval, size, delay, count) => {
 angular.module('hoge').factory('lines', ($interval, size, delay, count) => {
   const n = 10,
         lines = [];
-  for (let i = 0; i < n; ++i) {
-    lines.push({
-      x1: size / 2,
-      y1: size / 2,
-      x2: size / 2,
-      y2: size / 2,
-      color: '#000',
-      opacity: 0.5,
-      duration: 1,
-      delay: 0
-    });
-  }
-
   $interval(() => {
+    if (lines.length < n) {
+      lines.push({});
+    }
     for (const line of lines) {
       line.x1 = Math.random() * size;
       line.y1 = Math.random() * size;
@@ -267,6 +218,7 @@ angular.module('hoge').directive('main', (Path, Scale) => {
     controllerAs: 'main',
     controller: class {
       constructor(size, width, height, circles, ellipses, rects, lines, texts, paths, polygons, polylines) {
+        this.size = size;
         this.width = width;
         this.height = height;
         this.circles = circles;
