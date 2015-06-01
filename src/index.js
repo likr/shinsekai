@@ -1,16 +1,10 @@
 import angular from 'angular';
-import ssvg from './svg';
-import axis from './axis';
-import path from './path';
-import transform from './transform';
-import scale from './scale';
+import directives from './directives';
+import services from './services';
 
 angular.module('shinsekai', [
-  ssvg,
-  axis,
-  path,
-  transform,
-  scale
+  directives,
+  services
 ]);
 
 export default 'shinsekai';
