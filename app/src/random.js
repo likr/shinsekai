@@ -202,7 +202,7 @@ angular.module(moduleName).factory('polylines', ($interval, size, delay, count) 
 angular.module(moduleName).directive('random', (Path, Scale) => {
   return {
     restrict: 'E',
-    templateUrl: 'random.html',
+    templateUrl: 'components/random.html',
     scope: {
     },
     controllerAs: 'random',

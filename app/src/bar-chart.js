@@ -12,7 +12,7 @@ angular.module(moduleName).directive('barChart', (Transform, Scale) => {
         initialValue = 50;
   return {
     restrict: 'E',
-    templateUrl: 'bar-chart.html',
+    templateUrl: 'components/bar-chart.html',
     scope: {
     },
     controllerAs: 'barChart',

@@ -1,0 +1,37 @@
+<div>
+  <form>
+    <div class="form-group">
+      <label>X Variable</label>
+      <div>
+        <label class="radio-inline" ng-repeat="variable in scatterPlot.variables">
+          <input type="radio" ng-model="scatterPlot.xVariable" ng-change="scatterPlot.updateXVariable()" value="{{variable}}"/> {{variable}}
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Y Variable</label>
+      <div>
+        <label class="radio-inline" ng-repeat="variable in scatterPlot.variables">
+          <input type="radio" ng-model="scatterPlot.yVariable" ng-change="scatterPlot.updateYVariable()" value="{{variable}}"/> {{variable}}
+        </label>
+      </div>
+    </div>
+  </form>
+</div>
+<div>
+  <svg ng-attr-width="{{scatterPlot.width + 100}}" ng-attr-height="{{scatterPlot.height + 100}}">
+    <g transform="translate(50,50)">
+      <circle
+          r="5"
+          ssvg
+          ss-cx="scatterPlot.xScale.scale(datum[scatterPlot.xVariable])"
+          ss-cy="scatterPlot.yScale.scale(datum[scatterPlot.yVariable])"
+          ss-fill="scatterPlot.color(datum.species)"
+          ss-dur="0.3"
+          ss-delay="0"
+          ng-repeat="datum in scatterPlot.data"/>
+    </g>
+    <g ng-attr-transform="{{scatterPlot.transform().translate(50,550).toString()}}" ss-axis="'bottom'" ss-ticks="10" ss-scale="scatterPlot.xScale" ss-format="scatterPlot.labelFormat"/>
+    <g transform="translate(50,50)" ss-axis="'left'" ss-ticks="10" ss-scale="scatterPlot.yScale" ss-format="scatterPlot.labelFormat"/>
+  </svg>
+</div>
