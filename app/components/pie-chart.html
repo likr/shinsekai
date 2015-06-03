@@ -1,0 +1,12 @@
+<div>
+  <div ng-repeat="d in pieChart.allData">
+    <label>
+      <input type="checkbox" ng-model="pieChart.show[d.label]"> {{d.label}}
+    </label>
+  </div>
+</div>
+<div>
+  <svg ng-attr-width="{{pieChart.width}}" ng-attr-height="{{pieChart.height}}">
+    <g chart data="pieChart.data()" r="pieChart.r"/>
+  </svg>
+</div>

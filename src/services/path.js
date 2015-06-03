@@ -10,6 +10,11 @@ class Path {
     return this;
   }
 
+  arc(rx, ry, rotate, f1, f2, x, y) {
+    this.d += `A${rx} ${ry},${rotate},${f1},${f2},${x} ${y}`;
+    return this;
+  }
+
   close() {
     this.d += 'Z';
     return this;
