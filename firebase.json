@@ -1,0 +1,10 @@
+{
+  "firebase": "shinsekai-example",
+  "public": "app",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**",
+    "app/src"
+  ]
+}
