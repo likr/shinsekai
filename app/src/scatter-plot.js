@@ -1,6 +1,62 @@
 import angular from 'angular';
 import shinsekai from '../../src';
 
+const template = `
+<div>
+  <form>
+    <div class="form-group">
+      <label>X Variable</label>
+      <div>
+        <label class="radio-inline" ng-repeat="variable in scatterPlot.variables">
+          <input type="radio" ng-model="scatterPlot.xVariable" ng-change="scatterPlot.updateXVariable()" value="{{variable}}"/> {{variable}}
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Y Variable</label>
+      <div>
+        <label class="radio-inline" ng-repeat="variable in scatterPlot.variables">
+          <input type="radio" ng-model="scatterPlot.yVariable" ng-change="scatterPlot.updateYVariable()" value="{{variable}}"/> {{variable}}
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>X Ticks</label>
+      <input type="number" class="form-control" ng-model="scatterPlot.xTicks" min="1" max="15"/>
+    </div>
+    <div class="form-group">
+      <label>Y Ticks</label>
+      <input type="number" class="form-control" ng-model="scatterPlot.yTicks" min="1" max="15"/>
+    </div>
+  </form>
+</div>
+<div>
+  <svg ng-attr-width="{{scatterPlot.width + 100}}" ng-attr-height="{{scatterPlot.height + 100}}">
+    <g transform="translate(50,550)"
+        ss-axis="'bottom'"
+        ss-ticks="scatterPlot.xTicks"
+        ss-scale="scatterPlot.xScale"
+        ss-format="scatterPlot.labelFormat"
+        ss-dur="0.3"/>
+    <g transform="translate(50,50)"
+        ss-axis="'left'"
+        ss-ticks="scatterPlot.yTicks"
+        ss-scale="scatterPlot.yScale"
+        ss-format="scatterPlot.labelFormat"
+        ss-dur="0.3"/>
+    <g transform="translate(50,50)">
+      <circle
+          r="5"
+          ss-cx="scatterPlot.xScale.scale(datum[scatterPlot.xVariable])"
+          ss-cy="scatterPlot.yScale.scale(datum[scatterPlot.yVariable])"
+          ss-fill="scatterPlot.color(datum.species)"
+          ss-dur="0.3"
+          ng-repeat="datum in scatterPlot.data"/>
+    </g>
+  </svg>
+</div>
+`;
+
 const moduleName = 'shinsekai-example.scatter-plot';
 
 angular.module(moduleName, [shinsekai]);
@@ -11,7 +67,7 @@ angular.module(moduleName).directive('scatterPlot', (Transform, Scale) => {
 
   return {
     restrict: 'E',
-    templateUrl: 'components/scatter-plot.html',
+    template: template,
     scope: {
     },
     bindToController: {
