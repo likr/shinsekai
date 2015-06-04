@@ -6,6 +6,7 @@ import barChart from './bar-chart';
 import lineChart from './line-chart';
 import pieChart from './pie-chart';
 import scatterPlot from './scatter-plot'
+import points from './points';
 
 const moduleName = 'shinsekai-example';
 
@@ -16,7 +17,8 @@ angular.module(moduleName, [
   barChart,
   lineChart,
   pieChart,
-  scatterPlot
+  scatterPlot,
+  points
 ]);
 
 angular.module(moduleName).config(($routeProvider) => {
@@ -49,6 +51,9 @@ angular.module(moduleName).config(($routeProvider) => {
         }
       },
       template: '<scatter-plot data="data"></scatter-plot>'
+    })
+    .when('/points', {
+      template: '<points></points>'
     })
     .otherwise('/random');
 });
