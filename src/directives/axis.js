@@ -1,34 +1,36 @@
 import angular from 'angular';
 
-angular.module('shinsekai.ss-axis', []).directive('ssAxis', [() => {
+const template = `
+<line
+    stroke="#000"
+    ss-x1="axis.orient === 'left' ? 0 : axis.scale.yMin"
+    ss-y1="axis.orient === 'left' ? axis.scale.yMin : 0"
+    ss-x2="axis.orient === 'left' ? 0 : axis.scale.yMax"
+    ss-y2="axis.orient === 'left' ? axis.scale.yMax : 0"/>
+<g
+    ss-transform="axis.transform(i)"
+    ss-dur="axis.duration"
+    ss-delay="axis.delay"
+    ng-repeat="i in axis.indices">
+  <line
+      y1="0"
+      x2="0"
+      stroke="#000"
+      ss-x1="axis.orient === 'left' ? -10 : 0"
+      ss-y2="axis.orient === 'left' ? 0 : 10"/>
+  <text
+      ng-attr-text-anchor="{{axis.orient === 'left' ? 'end' : 'middle'}}"
+      ss-x="axis.orient === 'left' ? -10 : 0"
+      ss-y="axis.orient === 'left' ? 0 : 30">
+    {{axis.format(axis.x(i))}}
+  </text>
+</g>
+`;
+
+angular.module('shinsekai.ss-axis', []).directive('ssAxis', ['$rootScope', ($rootScope) => {
   return {
     restrict: 'A',
-    template: `
-      <line
-          stroke="#000"
-          ss-x1="axis.orient === 'left' ? 0 : axis.scale.yMin"
-          ss-y1="axis.orient === 'left' ? axis.scale.yMin : 0"
-          ss-x2="axis.orient === 'left' ? 0 : axis.scale.yMax"
-          ss-y2="axis.orient === 'left' ? axis.scale.yMax : 0"/>
-      <g ng-repeat="i in axis.indices()">
-        <line
-            stroke="#000"
-            ss-x1="axis.orient === 'left' ? -10 : axis.y(i)"
-            ss-y1="axis.orient === 'left' ? axis.y(i) : 0"
-            ss-x2="axis.orient === 'left' ? 0 : axis.y(i)"
-            ss-y2="axis.orient === 'left' ? axis.y(i) : 10"
-            ss-dur="axis.duration"
-            ss-delay="axis.delay"/>
-        <text
-            ng-attr-text-anchor="{{axis.orient === 'left' ? 'end' : 'middle'}}"
-            ss-x="axis.orient === 'left' ? -10 : axis.y(i)"
-            ss-y="axis.orient === 'left' ? axis.y(i) : 30"
-            ss-dur="axis.duration"
-            ss-delay="axis.delay">
-          {{axis.format(axis.x(i))}}
-        </text>
-      </g>
-    `,
+    template: template,
     scope: {
     },
     bindToController: {
@@ -45,14 +47,14 @@ angular.module('shinsekai.ss-axis', []).directive('ssAxis', [() => {
         if (this.format == null) {
           this.format = (x) => x;
         }
-      }
 
-      indices() {
-        const indices = [];
-        for (let i = 0; i <= this.ticks; ++i) {
-          indices.push(i);
-        }
-        return indices;
+        $rootScope.$watch(() => this.ticks, () => {
+          const indices = [];
+          for (let i = 0; i <= this.ticks; ++i) {
+            indices.push(i);
+          }
+          this.indices = indices;
+        });
       }
 
       x(i) {
@@ -61,6 +63,12 @@ angular.module('shinsekai.ss-axis', []).directive('ssAxis', [() => {
 
       y(i) {
         return this.scale.scale(this.x(i));
+      }
+
+      transform(i) {
+        return this.orient === 'left'
+          ? `translate(0,${this.y(i)})`
+          : `translate(${this.y(i)},0)`;
       }
     }
   };
