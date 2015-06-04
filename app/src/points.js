@@ -8,14 +8,14 @@ const template = `
       <label>n</label>
       <input class="form-control" type="number" min="0" step="50" ng-model="points.n"/>
     </div>
-    <button class="btn btn-default" ng-click="points.run()">Run</button>
+    <button class="btn btn-default" ng-click="points.start()">Start</button>
+    <button class="btn btn-default" ng-click="points.stop()">Stop</button>
   </form>
 </div>
 <div>
   <svg ng-attr-width="{{::points.width}}" ng-attr-height="{{::points.height}}">
     <circle
-      ss-cx="point.x"
-      ss-cy="point.y"
+      ss-transform="points.transform(point)"
       ss-r="::point.r"
       ss-fill="::point.color"
       ss-dur="::1"
@@ -28,7 +28,7 @@ const moduleName = 'shinsekai-example.points';
 
 angular.module(moduleName, [shinsekai]);
 
-angular.module(moduleName).directive('points', ($interval) => {
+angular.module(moduleName).directive('points', ($interval, Transform) => {
   return {
     restrict: 'E',
     template: template,
@@ -43,7 +43,13 @@ angular.module(moduleName).directive('points', ($interval) => {
         this.data = [];
       }
 
-      run() {
+      transform(point) {
+        return new Transform()
+          .translate(point.x, point.y)
+          .toString();
+      }
+
+      start() {
         if (this.currentLoop) {
           $interval.cancel(this.currentLoop);
         }
@@ -63,6 +69,12 @@ angular.module(moduleName).directive('points', ($interval) => {
             point.y = Math.random() * height;
           }
         }, 1000);
+      }
+
+      stop() {
+        if (this.currentLoop) {
+          $interval.cancel(this.currentLoop);
+        }
       }
     }
   };
