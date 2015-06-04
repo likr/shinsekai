@@ -16,20 +16,20 @@ const template = `
   <g transform="translate(50,50)">
     <g ng-repeat="variable in lineChart.variables">
       <circle
-          r="5"
+          ss-r="lineChart.animating[variable][$index] ? 15 : 5"
           ss-cx="lineChart.xScale.scale($index)"
           ss-cy="lineChart.yScale.scale(datum[variable])"
           ss-cy-enter="lineChart.yScale.scale(0)"
           ss-fill="lineChart.color(variable)"
-          ss-dur="0.1"
+          ss-dur="0.2"
+          ng-mouseenter="lineChart.onMouseenter(variable, $index)"
           ng-repeat="datum in lineChart.data"/>
       <path
           fill="none"
           ss-stroke="lineChart.color(variable)"
           ss-d="lineChart.path(variable)"
           ss-d-update="lineChart.pathEnter(variable)"
-          ss-dur="0.1"
-          />
+          ss-dur="0.2"/>
     </g>
   </g>
 </svg>
@@ -47,11 +47,11 @@ angular.module(moduleName).factory('data', ($interval) => {
       b: Math.random() * 100,
       c: Math.random() * 100
     });
-  }, 150, 21);
+  }, 100, 21);
   return data;
 });
 
-angular.module(moduleName).directive('lineChart', (Path, Transform, Scale, data) => {
+angular.module(moduleName).directive('lineChart', ($timeout, Path, Transform, Scale, data) => {
   const height = 500,
         width = 800;
   return {
@@ -64,6 +64,7 @@ angular.module(moduleName).directive('lineChart', (Path, Transform, Scale, data)
       constructor() {
         this.data = data;
         this.variables = ['a', 'b', 'c'];
+        this.animating = {};
         this.height = height;
         this.width = width;
         this.xScale = new Scale()
@@ -72,6 +73,10 @@ angular.module(moduleName).directive('lineChart', (Path, Transform, Scale, data)
         this.yScale = new Scale()
           .domain(0, 100)
           .range(height, 0);
+
+        for (const key of this.variables) {
+          this.animating[key] = {};
+        }
       }
 
       path(key) {
@@ -117,6 +122,20 @@ angular.module(moduleName).directive('lineChart', (Path, Transform, Scale, data)
 
       transform() {
         return new Transform();
+      }
+
+      onMouseenter(key, i) {
+        const fire = (j) => {
+          $timeout(() => {
+            this.animating[key][j] = true;
+          }, 100 * Math.abs(i - j))
+          .then(() => $timeout(() => {
+            this.animating[key][j] = false;
+          }, 200));
+        };
+        for (let j = 0; j < this.data.length; ++j) {
+          fire(j);
+        }
       }
     }
   };
