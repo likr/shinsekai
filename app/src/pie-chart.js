@@ -1,6 +1,48 @@
 import angular from 'angular';
 import shinsekai from '../../src';
 
+const rootTemplate = `
+<div>
+  <div ng-repeat="d in pieChart.data">
+    <label>
+      <input type="checkbox" ng-model="pieChart.show[d.label]"> {{d.label}}
+    </label>
+  </div>
+</div>
+<div>
+  <svg ng-attr-width="{{pieChart.width}}" ng-attr-height="{{pieChart.height}}">
+    <g chart data="pieChart.filteredData" r="pieChart.r"/>
+  </svg>
+</div>
+`;
+
+const chartTemplate = `
+<g ss-transform="chart.chartTransform">
+  <g ng-repeat="d in chart.data">
+    <path
+        ss-d="chart.d(d)"
+        ss-transform="chart.rotate(d)"
+        ss-fill="d.color"/>
+  </g>
+</g>
+<g ss-transform="chart.legendTransform">
+  <g
+      ss-transform="chart.legendItemTransform($index)"
+      ss-transform-enter="'translate(0,0)'"
+      ss-dur="0.3"
+      ss-delay="0.3"
+      ng-repeat="d in chart.data">
+    <rect
+        width="10"
+        height="10"
+        ss-fill="d.color"/>
+    <text x="20" y="10">
+      {{d.label}}
+    </text>
+  </g>
+</g>
+`;
+
 const moduleName = 'shinsekai-example.pie-chart';
 
 angular.module(moduleName, [shinsekai]);
@@ -21,33 +63,7 @@ angular.module(moduleName).factory('pieChartData', () => {
 angular.module(moduleName).directive('chart', ($rootScope, Path) => {
   return {
     restrict: 'A',
-    template: `
-      <g ng-attr-transform="translate({{2 * chart.r + 10}},10)">
-        <g ng-repeat="d in chart.data">
-          <rect
-              width="10"
-              height="10"
-              ss-y="$index * 20"
-              ss-y-enter="0"
-              ss-fill="d.color"
-              ss-dur="0.3"
-              ss-delay="0.3"/>
-          <text
-              x="20"
-              ss-y="$index * 20 + 10"
-              ss-y-enter="10"
-              ss-dur="0.3"
-              ss-delay="0.3">
-            {{d.label}}
-          </text>
-        </g>
-      </g>
-      <g ng-repeat="d in chart.data">
-        <path
-            ss-d="chart.shapes[d.label]"
-            ss-fill="d.color"/>
-      </g>
-    `,
+    template: chartTemplate,
     scope: {
     },
     bindToController: {
@@ -57,6 +73,9 @@ angular.module(moduleName).directive('chart', ($rootScope, Path) => {
     controllerAs: 'chart',
     controller: class {
       constructor() {
+        this.chartTransform = `translate(${this.r},${this.r})`;
+        this.legendTransform = `translate(${2 * this.r + 10},10)`;
+        this.rotates = {};
         this.shapes = {};
 
         $rootScope.$watchCollection(() => this.data, () => {
@@ -67,26 +86,30 @@ angular.module(moduleName).directive('chart', ($rootScope, Path) => {
           }
           sum *= 1.0001;
 
-          let angle = -Math.PI / 2;
+          let theta = -Math.PI / 2;
           data.forEach((d) => {
-            const xO = r,
-                  yO = r,
-                  theta = angle + 2 * Math.PI * d.value / sum;
-            this.shapes[d.label] = new Path(r * Math.cos(theta) + xO, r * Math.sin(theta) + yO)
-              .arc(r, r, 0,
-                d.value > sum / 2 ? 1 : 0, 0,
-                r * Math.cos(angle) + xO,
-                r * Math.sin(angle) + yO)
-              .lineTo(xO, yO)
+            const angle = 2 * Math.PI * d.value / sum;
+            this.shapes[d.label] = new Path(r * Math.cos(angle), r * Math.sin(angle))
+              .arc(r, r, 0, d.value > sum / 2 ? 1 : 0, 0, r, 0)
+              .lineTo(0, 0)
               .close()
               .toString();
-            angle = theta;
+            this.rotates[d.label] = theta * 180 / Math.PI;
+            theta += angle;
           });
         });
       }
 
-      shape(d) {
+      d(d) {
         return this.shapes[d.label];
+      }
+
+      rotate(d) {
+        return `rotate(${this.rotates[d.label] || 0})`;
+      }
+
+      legendItemTransform(i) {
+        return `translate(0,${20 * i})`;
       }
     }
   };
@@ -98,7 +121,7 @@ angular.module(moduleName).directive('pieChart', ($rootScope, pieChartData) => {
         width = 2 * r + 200;
   return {
     restrict: 'E',
-    templateUrl: 'components/pie-chart.html',
+    template: rootTemplate,
     scope: {
     },
     controllerAs: 'pieChart',
@@ -107,7 +130,7 @@ angular.module(moduleName).directive('pieChart', ($rootScope, pieChartData) => {
         this.height = height;
         this.width = width;
         this.r = r;
-        this.allData = pieChartData;
+        this.data = pieChartData;
         this.filteredData = [];
         this.show = {};
         for (const d of pieChartData) {
@@ -117,10 +140,6 @@ angular.module(moduleName).directive('pieChart', ($rootScope, pieChartData) => {
         $rootScope.$watchCollection(() => this.show, () => {
           this.filteredData = pieChartData.filter((d) => this.show[d.label]);
         });
-      }
-
-      data() {
-        return this.filteredData;
       }
     }
   };

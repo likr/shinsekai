@@ -90,7 +90,7 @@ angular.module(moduleName, [transformService])
           }
         };
 
-        if (attrs.transformEnter == null) {
+        if (attrs.ssTransformEnter == null) {
           element.setAttribute('transform', scope.$eval(attrs.ssTransform));
         } else {
           update(scope.$eval(attrs.ssTransform), scope.$eval(attrs.ssTransformEnter));
