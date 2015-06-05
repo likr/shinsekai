@@ -43,7 +43,7 @@ const template = `
 </div>
 `;
 
-const moduleName = 'shinsekai-example.scatter-plot';
+const moduleName = 'shinsekai-example.heatmap';
 
 angular.module(moduleName, [shinsekai]);
 
