@@ -1,6 +1,130 @@
 import angular from 'angular';
 import shinsekai from '../../src';
 
+const template = `
+<svg ng-attr-width="{{random.width + 100}}" ng-attr-height="{{random.height + 100}}">
+  <g transform="translate(50,50)">
+    <circle
+        ss-cx="random.xScale.scale(circle.x)"
+        ss-cy="random.yScale.scale(circle.y)"
+        ss-r="circle.r"
+        ss-fill="circle.color"
+        ss-stroke="circle.strokeColor"
+        ss-opacity="circle.opacity"
+        ss-cx-enter="random.xScale.scale(0)"
+        ss-cy-enter="random.yScale.scale(0)"
+        ss-r-enter="5"
+        ss-fill-enter="'#000'"
+        ss-stroke-enter="'#000'"
+        ss-opacity-enter="1"
+        ss-dur="circle.duration"
+        ss-delay="circle.delay"
+        ng-repeat="circle in random.circles"/>
+    <ellipse
+        ss-cx="random.xScale.scale(ellipse.x)"
+        ss-cy="random.yScale.scale(ellipse.y)"
+        ss-rx="ellipse.rx"
+        ss-ry="ellipse.ry"
+        ss-fill="ellipse.color"
+        ss-stroke="ellipse.strokeColor"
+        ss-opacity="ellipse.opacity"
+        ss-cx-enter="random.xScale.scale(0)"
+        ss-cy-enter="random.yScale.scale(0)"
+        ss-rx-enter="5"
+        ss-ry-enter="5"
+        ss-fill-enter="'#000'"
+        ss-stroke-enter="'#000'"
+        ss-opacity-enter="1"
+        ss-dur="ellipse.duration"
+        ss-delay="ellipse.delay"
+        ng-repeat="ellipse in random.ellipses"/>
+    <rect
+        ss-x="random.xScale.scale(rect.x)"
+        ss-y="random.yScale.scale(rect.y)"
+        ss-width="rect.width"
+        ss-height="rect.height"
+        ss-fill="rect.color"
+        ss-stroke="rect.strokeColor"
+        ss-opacity="rect.opacity"
+        ss-x-enter="random.xScale.scale(0)"
+        ss-y-enter="random.yScale.scale(0)"
+        ss-width-enter="10"
+        ss-height-enter="10"
+        ss-fill-enter="'#000'"
+        ss-stroke-enter="'#000'"
+        ss-opacity-enter="1"
+        ss-dur="rect.duration"
+        ss-delay="rect.delay"
+        ng-repeat="rect in random.rects"/>
+    <line
+        ss-x1="random.xScale.scale(line.x1)"
+        ss-y1="random.yScale.scale(line.y1)"
+        ss-x2="random.xScale.scale(line.x2)"
+        ss-y2="random.yScale.scale(line.y2)"
+        ss-stroke="line.color"
+        ss-opacity="line.opacity"
+        ss-x1-enter="random.xScale.scale(0)"
+        ss-y1-enter="random.yScale.scale(0)"
+        ss-x2-enter="random.xScale.scale(0)"
+        ss-y2-enter="random.yScale.scale(0)"
+        ss-stroke-enter="'#000'"
+        ss-opacity-enter="1"
+        ss-dur="line.duration"
+        ss-delay="line.delay"
+        ng-repeat="line in random.lines"/>
+    <text
+        ss-x="random.xScale.scale(text.x)"
+        ss-y="random.yScale.scale(text.y)"
+        ss-fill="text.color"
+        ss-opacity="text.opacity"
+        ss-x-enter="random.xScale.scale(0)"
+        ss-y-enter="random.yScale.scale(0)"
+        ss-fill-enter="'#000'"
+        ss-opacity-enter="1"
+        ss-dur="text.duration"
+        ss-delay="text.delay"
+        ng-repeat="text in random.texts">
+      {{text.text}}
+    </text>
+    <path
+        fill="none"
+        ss-d="random.path(path.points)"
+        ss-stroke="path.color"
+        ss-opacity="path.opacity"
+        ss-d-enter="random.initialPath(path.points)"
+        ss-stroke-enter="'#000'"
+        ss-opacity-enter="1"
+        ss-dur="path.duration"
+        ss-delay="path.delay"
+        ng-repeat="path in random.paths"/>
+    <polygon
+        fill="none"
+        ss-points="random.points(polygon.points)"
+        ss-stroke="polygon.color"
+        ss-opacity="polygon.opacity"
+        ss-points-enter="random.initialPoints(polygon.points)"
+        ss-stroke-enter="'#000'"
+        ss-opacity-enter="1"
+        ss-dur="polygon.duration"
+        ss-delay="polygon.delay"
+        ng-repeat="polygon in random.polygons"/>
+    <polyline
+        fill="none"
+        ss-points="random.points(polyline.points)"
+        ss-stroke="polyline.color"
+        ss-opacity="polyline.opacity"
+        ss-points-enter="random.initialPoints(polyline.points)"
+        ss-stroke-enter="'#000'"
+        ss-opacity-enter="1"
+        ss-dur="polyline.duration"
+        ss-delay="polyline.delay"
+        ng-repeat="polyline in random.polylines"/>
+  </g>
+  <g transform="translate(50,850)" ss-axis="'bottom'" ss-ticks="10" ss-scale="random.xScale"/>
+  <g transform="translate(50,50)" ss-axis="'left'" ss-ticks="10" ss-scale="random.yScale"/>
+</svg>
+`;
+
 const moduleName = 'shinsekai-example.random';
 
 angular.module(moduleName, [shinsekai]);
@@ -202,7 +326,7 @@ angular.module(moduleName).factory('polylines', ($interval, size, delay, count) 
 angular.module(moduleName).directive('random', (Path, Scale) => {
   return {
     restrict: 'E',
-    templateUrl: 'components/random.html',
+    template: template,
     scope: {
     },
     controllerAs: 'random',
