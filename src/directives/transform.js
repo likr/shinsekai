@@ -17,7 +17,7 @@ const parse = (t) => {
 const moduleName = 'shinsekai.directives.transform';
 
 angular.module(moduleName, [transformService])
-  .directive('ssTransform', ($window, Transform) => {
+  .directive('ssTransform', ['$window', 'Transform', ($window, Transform) => {
     const validate = (newTransform, oldTransform) => {
       if (newTransform.length !== oldTransform.length) {
         return false;
@@ -99,6 +99,6 @@ angular.module(moduleName, [transformService])
         scope.$watch(attrs.ssTransform, update);
       }
     };
-  });
+  }]);
 
 export default moduleName;

@@ -6,15 +6,18 @@ const template = `
   <a href="http://www.city.kobe.lg.jp/information/data/statistics/toukei/sanren/index.html">平成17年 神戸市産業連関表</a>
 </div>
 <div>
-  <svg ng-attr-width={{heatmap.width}} ng-attr-height={{heatmap.height}}>
-    <g transform="translate(150,150)">
+  <svg ng-attr-width={{::heatmap.width}} ng-attr-height={{::heatmap.height}}>
+    <g transform="translate(150,150)rotate(-90)">
       <text
           text-anchor="begin"
           x="5"
           y="14"
-          ss-transform="heatmap.transform(24 * $index, 0, -90)"
-          ng-repeat="label in heatmap.data.keys">
-        {{label}}
+          ss-transform="::heatmap.transform(0, 24 * $index)"
+          ss-transform-enter="::heatmap.transform(0, 0)"
+          ss-dur="::1"
+          ss-delay="::0.5"
+          ng-repeat="label in ::heatmap.data.keys">
+        {{::label}}
       </text>
     </g>
     <g transform="translate(150,150)">
@@ -22,21 +25,30 @@ const template = `
           text-anchor="end"
           x="-5"
           y="14"
-          ss-transform="heatmap.transform(0, 24 * $index)"
-          ng-repeat="label in heatmap.data.keys">
-        {{label}}
+          ss-transform="::heatmap.transform(0, 24 * $index)"
+          ss-transform-enter="::heatmap.transform(0, 0)"
+          ss-dur="::1"
+          ss-delay="::0.5"
+          ng-repeat="label in ::heatmap.data.keys">
+        {{::label}}
       </text>
     </g>
     <g transform="translate(150,150)">
       <g
-          ss-transform="heatmap.transform(0, 24 * $index)"
-          ng-repeat="row in heatmap.data.values">
+          ss-transform="::heatmap.transform(0, 24 * $index)"
+          ss-transform-enter="::heatmap.transform(0, 0)"
+          ss-dur="::1"
+          ss-delay="::0.5"
+          ng-repeat="row in ::heatmap.data.values">
         <rect
             width="20"
             height="20"
-            ss-fill="heatmap.color(val)"
-            ss-transform="heatmap.transform(24 * $index, 0)"
-            ng-repeat="val in row track by $index"/>
+            ss-fill="::heatmap.color(val)"
+            ss-transform="::heatmap.transform(24 * $index, 0)"
+            ss-transform-enter="::heatmap.transform(0, 0)"
+            ss-dur="::1"
+            ss-delay="::0.5"
+            ng-repeat="val in ::row track by $index"/>
       </g>
     </g>
   </svg>
@@ -118,8 +130,8 @@ angular.module(moduleName).directive('heatmap', (Scale) => {
           .range(240, 0);
       }
 
-      transform(x, y, rotate=0) {
-        return `translate(${x},${y})rotate(${rotate})`;
+      transform(x, y) {
+        return `translate(${x},${y})`;
       }
 
       color(val) {
