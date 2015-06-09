@@ -8,10 +8,10 @@ const template = `
     ss-x2="axis.orient === 'left' ? 0 : axis.scale.yMax"
     ss-y2="axis.orient === 'left' ? axis.scale.yMax : 0"/>
 <g
-    ss-transform="axis.transform(i)"
+    ss-transform="axis.transform(tick.y)"
     ss-dur="axis.duration"
     ss-delay="axis.delay"
-    ng-repeat="i in axis.indices">
+    ng-repeat="tick in axis.values track by $index">
   <line
       y1="0"
       x2="0"
@@ -22,7 +22,7 @@ const template = `
       ng-attr-text-anchor="{{axis.orient === 'left' ? 'end' : 'middle'}}"
       ss-x="axis.orient === 'left' ? -10 : 0"
       ss-y="axis.orient === 'left' ? 0 : 30">
-    {{axis.format(axis.x(i))}}
+    {{axis.format(tick.x)}}
   </text>
 </g>
 `;
@@ -49,26 +49,17 @@ angular.module('shinsekai.ss-axis', []).directive('ssAxis', ['$rootScope', ($roo
         }
 
         $rootScope.$watch(() => this.ticks, () => {
-          const indices = [];
+          this.values = new Array(this.ticks);
           for (let i = 0; i <= this.ticks; ++i) {
-            indices.push(i);
+            const x = (this.scale.xMax - this.scale.xMin) * i / this.ticks + this.scale.xMin,
+                  y = this.scale.scale(x);
+            this.values[i] = {x, y};
           }
-          this.indices = indices;
         });
       }
 
-      x(i) {
-        return (this.scale.xMax - this.scale.xMin) * i / this.ticks + this.scale.xMin;
-      }
-
-      y(i) {
-        return this.scale.scale(this.x(i));
-      }
-
-      transform(i) {
-        return this.orient === 'left'
-          ? `translate(0,${this.y(i)})`
-          : `translate(${this.y(i)},0)`;
+      transform(y) {
+        return this.orient === 'left' ? `translate(0,${y})` : `translate(${y},0)`;
       }
     }
   };
