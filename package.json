@@ -28,6 +28,6 @@
     "watchify": "^3.2.1"
   },
   "browser": {
-    "angular": "./src/angular.js"
+    "angular": "./lib/angular.js"
   }
 }
