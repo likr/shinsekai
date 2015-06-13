@@ -9,7 +9,7 @@ Component based visualization framework for Angular
 bower install shinsekai
 ```
 
-```
+```html
 <script src="angular.js"></script>
 <script src="shinsekai.js"></script>
 ```
@@ -20,7 +20,7 @@ bower install shinsekai
 npm install shinsekai
 ```
 
-```
+```javascript
 var angular = require('angular'),
     shinsekai = require('shinsekai');
 
@@ -30,7 +30,7 @@ angular.module('example', [shinsekai]);
 # Usage
 
 
-```
+```html
 <!-- Normal SVG -->
 <circle r="5" cx="50" cy="50"/>
 
@@ -45,7 +45,7 @@ angular.module('example', [shinsekai]);
 
 https://jsfiddle.net/9mdjvh1o/
 
-```
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -91,7 +91,7 @@ angular.module('shinsekai-example', ['shinsekai'])
 </html>
 ```
 
-[Another example](http://likr.github.io/shinsekai-proto/)
+[Another example](https://shinsekai-example.firebaseapp.com/#/random)
 
 # Lisence
 
