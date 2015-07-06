@@ -1,6 +1,6 @@
 {
   "name": "shinsekai",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Component based visualization framework for Angular",
   "main": "lib/index.js",
   "files": [
