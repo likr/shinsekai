@@ -1,7 +1,7 @@
 {
   "name": "shinsekai",
   "main": "shinsekai.js",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "homepage": "https://github.com/likr/shinsekai",
   "authors": [
     "Yosuke ONOUE <onoue@likr-lab.com>"

@@ -669,15 +669,17 @@ var createAnimate = function createAnimate($window, attr, value0, value, now, du
   return animate;
 };
 
-var all = ['circle', 'ellipse', 'rect', 'line', 'path', 'polygon', 'polyline', 'text'];
+var all = ['circle', 'ellipse', 'rect', 'line', 'path', 'polygon', 'polyline', 'text', 'tspan'];
 var attributes = {
   cx: ['circle', 'ellipse'],
   cy: ['circle', 'ellipse'],
   r: ['circle'],
   rx: ['ellipse'],
   ry: ['ellipse'],
-  x: ['rect', 'text'],
-  y: ['rect', 'text'],
+  x: ['rect', 'text', 'tspan'],
+  y: ['rect', 'text', 'tspan'],
+  dx: ['text', 'tspan'],
+  dy: ['text', 'tspan'],
   width: ['rect'],
   height: ['rect'],
   x1: ['line'],
