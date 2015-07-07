@@ -25,7 +25,8 @@ const all = [
   'path',
   'polygon',
   'polyline',
-  'text'
+  'text',
+  'tspan'
 ];
 const attributes = {
   cx: ['circle', 'ellipse'],
@@ -33,8 +34,10 @@ const attributes = {
   r: ['circle'],
   rx: ['ellipse'],
   ry: ['ellipse'],
-  x: ['rect', 'text'],
-  y: ['rect', 'text'],
+  x: ['rect', 'text', 'tspan'],
+  y: ['rect', 'text', 'tspan'],
+  dx: ['text', 'tspan'],
+  dy: ['text', 'tspan'],
   width: ['rect'],
   height: ['rect'],
   x1: ['line'],
